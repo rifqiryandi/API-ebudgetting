@@ -1,0 +1,36 @@
+{
+  "name": "presensitkk-api",
+  "version": "1.0.0",
+  "description": "api presensi tkk",
+  "main": "server.js",
+  "scripts": {
+    "test": "hello presensi tkk"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.posindonesia.co.id/enterprise/simtkk/presensitkk-api.git"
+  },
+  "keywords": [
+    "presensi",
+    "tkk"
+  ],
+  "author": "hasbi",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "knex": "^2.4.2",
+    "minio": "^7.1.1",
+    "morgan": "^1.10.0",
+    "mssql": "^9.1.1",
+    "mysql": "^2.18.1",
+    "path": "^0.12.7",
+    "rotating-file-stream": "^3.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
