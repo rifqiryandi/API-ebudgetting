@@ -396,6 +396,24 @@ function reportrealisasi(req, res) {
         100
       ).toFixed(1);
 
+      if (isNaN(mtfycse) == 0) {
+        mtfycse = mtfycse;
+      } else {
+        mtfycse = 0.0;
+      }
+
+      if (isNaN(mtfydir) == 0) {
+        mtfydir = mtfydir;
+      } else {
+        mtfydir = 0.0;
+      }
+
+      if (isNaN(mtfycomm) == 0) {
+        mtfycomm = mtfycomm;
+      } else {
+        mtfycomm = 0.0;
+      }
+
       let mtytdcse = (
         (realisasicse[0].nominal / (presentase * nominalmataanggarancsefy)) *
         100
@@ -410,6 +428,25 @@ function reportrealisasi(req, res) {
         (realisasicomm[0].nominal / (presentase * nominalmataanggarancomfy)) *
         100
       ).toFixed(1);
+
+      if (isNaN(mtytdcse) == 0) {
+        mtytdcse = mtytdcse;
+      } else {
+        mtytdcse = 0.0;
+      }
+
+      if (isNaN(mtytddir) == 0) {
+        mtytddir = mtytddir;
+      } else {
+        mtytddir = 0.0;
+      }
+
+      if (isNaN(mtytdcomm) == 0) {
+        mtytdcomm = mtytdcomm;
+      } else {
+        mtytdcomm = 0.0;
+      }
+
       let sisamtanggarancse;
       let sisamtanggarandir;
       let sisamtanggarancomm;
