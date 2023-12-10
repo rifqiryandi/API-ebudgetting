@@ -533,10 +533,7 @@ let getmatanggaran = (kdkelmatanggaran) => {
           "c.kode_kelompok_mata_anggaran"
         )
         .whereNot("a.status_aktif", 2)
-        .whereILike(
-          "a.kode_kelompok_mata_anggaran",
-          `%${kdkelmatanggaran || ""}%`
-        )
+        .where("a.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .orderBy("a.create_date", "desc");
       // console.log(data);
       resolve(data);
@@ -713,16 +710,15 @@ let getsubmatanggaran = (kdkelmatanggaran, kdmatanggaran) => {
         )
         .whereNot("a.status_aktif", 2)
         .modify(function (queryBuilder) {
-          if (kdkelmatanggaran !== "") {
-            queryBuilder.whereILike(
+          if (kdkelmatanggaran !== "" && kdmatanggaran == "") {
+            queryBuilder.where(
               "a.kode_kelompok_mata_anggaran",
-              `%${kdkelmatanggaran || ""}%`
+              kdkelmatanggaran
             );
           } else if (kdmatanggaran !== "") {
-            queryBuilder.whereILike(
-              "a.kode_mata_anggaran",
-              `%${kdmatanggaran || ""}%`
-            );
+            queryBuilder
+              .where("a.kode_kelompok_mata_anggaran", kdkelmatanggaran)
+              .where("a.kode_mata_anggaran", kdmatanggaran);
           } else {
           }
         })

@@ -600,7 +600,7 @@ function getsubmatanggaran(req, res) {
         responCode: 500,
         Msg: "Eror Database",
       });
-      // console.log(error);
+      console.log(error);
     });
 }
 
