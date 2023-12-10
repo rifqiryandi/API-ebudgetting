@@ -439,12 +439,14 @@ function reportrealisasi(req, res) {
         sisamtanggarancomm: sisamtanggarancomm,
       });
       // console.log(data_arrmataanggaran);
+      const datagabung = data_arrmataanggaran.concat(data_arr);
       if (result) {
         res.status(200).json({
           responCode: 200,
           Msg: "Data Tersedia",
-          dataatas: data_arrmataanggaran,
-          data: data_arr,
+          data: datagabung,
+          // dataatas: data_arrmataanggaran,
+          // data: data_arr,
         });
       } else {
         res.status(400).json({
