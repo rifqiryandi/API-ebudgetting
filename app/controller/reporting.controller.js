@@ -597,6 +597,24 @@ function reportrealisasi(req, res) {
         100
       ).toFixed(1);
 
+      if (isNaN(kelmtfycse) == 0) {
+        kelmtfycse = kelmtfycse;
+      } else {
+        kelmtfycse = 0;
+      }
+
+      if (isNaN(kelmtfydir) == 0) {
+        kelmtfydir = kelmtfydir;
+      } else {
+        kelmtfydir = 0;
+      }
+
+      if (isNaN(kelmtfycomm) == 0) {
+        kelmtfycomm = kelmtfycomm;
+      } else {
+        kelmtfycomm = 0;
+      }
+
       let kelmtytdcse = (
         (realisasicsekel[0].nominal /
           (presentase * nominalkelmataanggarancsefy)) *
@@ -614,6 +632,24 @@ function reportrealisasi(req, res) {
           (presentase * nominalkelmataanggarancomfy)) *
         100
       ).toFixed(1);
+
+      if (isNaN(kelmtytdcse) == 0) {
+        kelmtytdcse = kelmtytdcse;
+      } else {
+        kelmtytdcse = 0;
+      }
+
+      if (isNaN(kelmtytddir) == 0) {
+        kelmtytddir = kelmtytddir;
+      } else {
+        kelmtytddir = 0;
+      }
+
+      if (isNaN(kelmtytdcomm) == 0) {
+        kelmtytdcomm = kelmtytdcomm;
+      } else {
+        kelmtytdcomm = 0;
+      }
       let kelsisamtanggarancse;
       let kelsisamtanggarandir;
       let kelsisamtanggarancomm;
@@ -641,14 +677,14 @@ function reportrealisasi(req, res) {
         mataanggaranfydir: nominalkelmataanggarandirfy,
         mataanggaranytddir: kelmataanggaranytddir,
         mtfydir: kelmtfydir,
-        mtytddir: kelmtytdcse,
-        sisamtanggarandir: kelsisamtanggarancse,
+        mtytddir: kelmtytddir,
+        sisamtanggarandir: kelsisamtanggarandir,
         realisasicomm: realisasicommkel[0].nominal,
         nominalmataanggarancomfy: nominalkelmataanggarancomfy,
         mataanggaranytdcomm: kelmataanggaranytdcomm,
         mtfycomm: kelmtfycomm,
-        mtytdcomm: kelmtytdcse,
-        sisamtanggarancomm: kelsisamtanggarancse,
+        mtytdcomm: kelmtytdcomm,
+        sisamtanggarancomm: kelsisamtanggarancomm,
       });
       // console.log(data_arrkelmataanggaran);
       data_arrmataanggaran.push({
