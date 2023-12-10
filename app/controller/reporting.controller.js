@@ -30,11 +30,12 @@ function reportrealisasi(req, res) {
       let ytdpersencse;
       let ytdpersendir;
       let ytdpersencomm;
+      let getpresentaseanggaran = await model.getpresentaseanggaran();
+      let presentase = getpresentaseanggaran[0].presentasi / 100;
       for (let i = 0; i < result.length; i++) {
         // console.log(result);
         let kode_sub_mata_anggaran = result[i].kode_sub_mata_anggaran;
-        let getpresentaseanggaran = await model.getpresentaseanggaran();
-        let presentase = getpresentaseanggaran[0].presentasi / 100;
+
         // console.log(presentase);
         // buat ambil anggaranfycse
         let anggaranfycse = await model.getanggaranfy(
@@ -370,15 +371,72 @@ function reportrealisasi(req, res) {
           mataanggaranswitchcommplus[0].bsu_inout;
       }
 
+      let mataanggaranytdcse;
+      let mataanggaranytddir;
+      let mataanggaranytdcomm;
+
+      mataanggaranytdcse = Math.floor(nominalmataanggarancsefy * presentase);
+      mataanggaranytddir = Math.floor(nominalmataanggarandirfy * presentase);
+      mataanggaranytdcomm = Math.floor(nominalmataanggarancomfy * presentase);
+
+      let mtfycse = (
+        (realisasicse[0].nominal / nominalmataanggarancsefy) *
+        100
+      ).toFixed(1);
+
+      let mtfydir = (
+        (realisasidir[0].nominal / nominalmataanggarandirfy) *
+        100
+      ).toFixed(1);
+
+      let mtfycomm = (
+        (realisasicomm[0].nominal / nominalmataanggarancomfy) *
+        100
+      ).toFixed(1);
+
+      let mtytdcse = (
+        (realisasicse[0].nominal / (presentase * nominalmataanggarancsefy)) *
+        100
+      ).toFixed(1);
+
+      let mtytddir = (
+        (realisasidir[0].nominal / (presentase * nominalmataanggarandirfy)) *
+        100
+      ).toFixed(1);
+
+      let mtytdcomm = (
+        (realisasicomm[0].nominal / (presentase * nominalmataanggarancomfy)) *
+        100
+      ).toFixed(1);
+      let sisamtanggarancse;
+      let sisamtanggarandir;
+      let sisamtanggarancomm;
+
+      sisamtanggarancse = nominalmataanggarancsefy - realisasicse[0].nominal;
+      sisamtanggarandir = nominalmataanggarandirfy - realisasidir[0].nominal;
+      sisamtanggarancomm = nominalmataanggarancomfy - realisasicomm[0].nominal;
+
       // console.log(anggaranfydir);
 
       data_arrmataanggaran.push({
         realisasicse: realisasicse[0].nominal,
         mataanggaranfycse: nominalmataanggarancsefy,
+        mataanggaranytdcse: mataanggaranytdcse,
+        mtfycse: mtfycse,
+        mtytdcse: mtytdcse,
+        sisamtanggarancse: sisamtanggarancse,
         realisasidir: realisasidir[0].nominal,
         mataanggaranfydir: nominalmataanggarandirfy,
+        mataanggaranytddir: mataanggaranytddir,
+        mtfydir: mtfydir,
+        mtytddir: mtytddir,
+        sisamtanggarandir: sisamtanggarandir,
         realisasicomm: realisasicomm[0].nominal,
         nominalmataanggarancomfy: nominalmataanggarancomfy,
+        mataanggaranytdcomm: mataanggaranytdcomm,
+        mtfycomm: mtfycomm,
+        mtytdcomm: mtytdcomm,
+        sisamtanggarancomm: sisamtanggarancomm,
       });
       // console.log(data_arrmataanggaran);
       if (result) {
