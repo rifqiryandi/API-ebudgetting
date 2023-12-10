@@ -4,6 +4,7 @@ let model = require("../model/reporting.model");
 
 function reportrealisasi(req, res) {
   let kdmatanggaran = req.body.kdmatanggaran;
+  let kdkelmatanggaran = req.body.kdkelmatanggaran;
   let query = model.reportrealisasi(kdmatanggaran);
   let entitas1 = 711;
   let entitas2 = 712;
@@ -12,6 +13,7 @@ function reportrealisasi(req, res) {
     .then(async (result) => {
       var data_arr = [];
       var data_arrmataanggaran = [];
+      var data_arrkelmataanggaran = [];
       let nominalanggarancsefy;
       let nominalanggarandirfy;
       let nominalanggarancomfy;
@@ -417,8 +419,204 @@ function reportrealisasi(req, res) {
       sisamtanggarancomm = nominalmataanggarancomfy - realisasicomm[0].nominal;
 
       // console.log(anggaranfydir);
+      let getmataanggaran = await model.getmataanggaran(kdmatanggaran);
+      let getkelmataanggaran = await model.getkelmataanggaran(kdkelmatanggaran);
+      // console.log(getmataanggaran[0]);
 
+      let realisasicsekel = await model.getotalkelmataanggaran(
+        entitas1,
+        kdkelmatanggaran
+      );
+      let realisasidirkel = await model.getotalkelmataanggaran(
+        entitas2,
+        kdkelmatanggaran
+      );
+      let realisasicommkel = await model.getotalkelmataanggaran(
+        entitas3,
+        kdkelmatanggaran
+      );
+
+      let anggaranfycsekel = await model.getkelmataanggaranfy(
+        entitas1,
+        kdkelmatanggaran
+      );
+      let anggaranfydirkel = await model.getkelmataanggaranfy(
+        entitas2,
+        kdkelmatanggaran
+      );
+      let anggaranfycommkel = await model.getkelmataanggaranfy(
+        entitas3,
+        kdkelmatanggaran
+      );
+
+      let kelmataanggarantopupcse = await model.getsumtopupkelmataanggaran(
+        entitas1,
+        kdkelmatanggaran
+      );
+
+      let kelmataanggarantopupdir = await model.getsumtopupkelmataanggaran(
+        entitas2,
+        kdkelmatanggaran
+      );
+      let kelmataanggarantopupcomm = await model.getsumtopupkelmataanggaran(
+        entitas3,
+        kdkelmatanggaran
+      );
+
+      let kelmataanggaranswitchcsemin =
+        await model.getsumswitchkelmatanggarankurang(
+          entitas1,
+          kdkelmatanggaran
+        );
+
+      let kelmataanggaranswitchdirmin =
+        await model.getsumswitchkelmatanggarankurang(
+          entitas2,
+          kdkelmatanggaran
+        );
+      let kelmataanggaranswitchcommmin =
+        await model.getsumswitchkelmatanggarankurang(
+          entitas3,
+          kdkelmatanggaran
+        );
+
+      let kelmataanggaranswitchcseplus =
+        await model.getsumswitchkelmatanggarantambah(
+          entitas1,
+          kdkelmatanggaran
+        );
+
+      let kelmataanggaranswitchdirplus =
+        await model.getsumswitchkelmatanggarantambah(
+          entitas2,
+          kdkelmatanggaran
+        );
+      let kelmataanggaranswitchcommplus =
+        await model.getsumswitchkelmatanggarantambah(
+          entitas3,
+          kdkelmatanggaran
+        );
+
+      let nominalkelmataanggarancsefy;
+      let nominalkelmataanggarandirfy;
+      let nominalkelmataanggarancomfy;
+
+      if (anggaranfycsekel[0].nominal === null) {
+        nominalkelmataanggarancsefy = "-";
+      } else {
+        nominalkelmataanggarancsefy =
+          anggaranfycsekel[0].nominal +
+          kelmataanggarantopupcse[0].nominaltopup -
+          kelmataanggaranswitchcsemin[0].bsu_inout +
+          kelmataanggaranswitchcseplus[0].bsu_inout;
+      }
+
+      if (anggaranfydirkel[0].nominal === null) {
+        nominalkelmataanggarandirfy = "-";
+      } else {
+        nominalkelmataanggarandirfy =
+          anggaranfydirkel[0].nominal +
+          kelmataanggarantopupdir[0].nominaltopup -
+          kelmataanggaranswitchdirmin[0].bsu_inout +
+          kelmataanggaranswitchdirplus[0].bsu_inout;
+      }
+
+      if (anggaranfycommkel[0].nominal === null) {
+        nominalkelmataanggarancomfy = "-";
+      } else {
+        nominalkelmataanggarancomfy =
+          anggaranfycommkel[0].nominal +
+          kelmataanggarantopupcomm[0].nominaltopup -
+          kelmataanggaranswitchcommmin[0].bsu_inout +
+          kelmataanggaranswitchcommplus[0].bsu_inout;
+      }
+
+      let kelmataanggaranytdcse;
+      let kelmataanggaranytddir;
+      let kelmataanggaranytdcomm;
+
+      kelmataanggaranytdcse = Math.floor(
+        nominalkelmataanggarancsefy * presentase
+      );
+      kelmataanggaranytddir = Math.floor(
+        nominalkelmataanggarandirfy * presentase
+      );
+      kelmataanggaranytdcomm = Math.floor(
+        nominalkelmataanggarancomfy * presentase
+      );
+
+      let kelmtfycse = (
+        (realisasicsekel[0].nominal / nominalkelmataanggarancsefy) *
+        100
+      ).toFixed(1);
+
+      let kelmtfydir = (
+        (realisasidirkel[0].nominal / nominalkelmataanggarandirfy) *
+        100
+      ).toFixed(1);
+
+      let kelmtfycomm = (
+        (realisasicommkel[0].nominal / nominalkelmataanggarancomfy) *
+        100
+      ).toFixed(1);
+
+      let kelmtytdcse = (
+        (realisasicsekel[0].nominal /
+          (presentase * nominalkelmataanggarancsefy)) *
+        100
+      ).toFixed(1);
+
+      let kelmtytddir = (
+        (realisasidirkel[0].nominal /
+          (presentase * nominalkelmataanggarandirfy)) *
+        100
+      ).toFixed(1);
+
+      let kelmtytdcomm = (
+        (realisasicommkel[0].nominal /
+          (presentase * nominalkelmataanggarancomfy)) *
+        100
+      ).toFixed(1);
+      let kelsisamtanggarancse;
+      let kelsisamtanggarandir;
+      let kelsisamtanggarancomm;
+
+      kelsisamtanggarancse =
+        nominalkelmataanggarancsefy - realisasicsekel[0].nominal;
+      kelsisamtanggarandir =
+        nominalkelmataanggarandirfy - realisasidirkel[0].nominal;
+      kelsisamtanggarancomm =
+        nominalkelmataanggarancomfy - realisasicommkel[0].nominal;
+      // console.log(realisasicsekel);
+
+      data_arrkelmataanggaran.push({
+        kode_kelompok_mata_anggaran:
+          getkelmataanggaran[0].kode_kelompok_mata_anggaran,
+        nama_kelompok_mata_anggaran:
+          getkelmataanggaran[0].nama_kelompok_mata_anggaran,
+        realisasicse: realisasicsekel[0].nominal,
+        mataanggaranfycse: nominalkelmataanggarancsefy,
+        mataanggaranytdcse: kelmataanggaranytdcse,
+        mtfycse: kelmtfycse,
+        mtytdcse: kelmtytdcse,
+        sisamtanggarancse: kelsisamtanggarancse,
+        realisasidir: realisasidirkel[0].nominal,
+        mataanggaranfydir: nominalkelmataanggarandirfy,
+        mataanggaranytddir: kelmataanggaranytddir,
+        mtfydir: kelmtfydir,
+        mtytddir: kelmtytdcse,
+        sisamtanggarandir: kelsisamtanggarancse,
+        realisasicomm: realisasicommkel[0].nominal,
+        nominalmataanggarancomfy: nominalkelmataanggarancomfy,
+        mataanggaranytdcomm: kelmataanggaranytdcomm,
+        mtfycomm: kelmtfycomm,
+        mtytdcomm: kelmtytdcse,
+        sisamtanggarancomm: kelsisamtanggarancse,
+      });
+      // console.log(data_arrkelmataanggaran);
       data_arrmataanggaran.push({
+        kode_mata_anggaran: getmataanggaran[0].kode_mata_anggaran,
+        nama_mata_anggaran: getmataanggaran[0].nama_mata_anggaran,
         realisasicse: realisasicse[0].nominal,
         mataanggaranfycse: nominalmataanggarancsefy,
         mataanggaranytdcse: mataanggaranytdcse,
@@ -439,7 +637,10 @@ function reportrealisasi(req, res) {
         sisamtanggarancomm: sisamtanggarancomm,
       });
       // console.log(data_arrmataanggaran);
-      const datagabung = data_arrmataanggaran.concat(data_arr);
+      const datagabung = data_arrkelmataanggaran.concat(
+        data_arrmataanggaran,
+        data_arr
+      );
       if (result) {
         res.status(200).json({
           responCode: 200,
