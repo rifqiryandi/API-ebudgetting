@@ -7,7 +7,7 @@ let reportrealisasi = (kdmatanggaran) => {
       let data = db.knex1
         .select("a.kode_sub_mata_anggaran", "a.nama_sub_mata_anggaran")
         .from("r_sub_mata_anggaran as a")
-        .where("a.kode_mata_anggaran", "BKK");
+        .where("a.kode_mata_anggaran", kdmatanggaran);
       // console.log(data);
       resolve(data);
     } catch (error) {
@@ -410,7 +410,7 @@ let getotalmataanggaran = (entitas1, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_pengajuan", 2)
-        .where("e.kode_mata_anggaran", "BKK")
+        .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("b.kode_entitas", entitas1);
       // console.log(data);
       resolve(data);
@@ -438,7 +438,7 @@ let getmataanggaranfy = (entitas1, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
-        .where("e.kode_mata_anggaran", "BKK")
+        .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("b.kode_entitas", entitas1);
 
       // console.log(data);
@@ -468,7 +468,7 @@ let getsumtopupmataanggaran = (entitas1, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status", 2)
-        .where("e.kode_mata_anggaran", "BKK")
+        .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("c.kode_entitas", entitas1);
       // .groupBy("a.id_anggaran");
 
@@ -499,7 +499,7 @@ let getsumswitchmatanggarankurang = (entitas1, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
-        .where("e.kode_mata_anggaran", "BKK")
+        .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("c.kode_entitas", entitas1);
 
       // console.log(data);
@@ -529,7 +529,7 @@ let getsumswitchmatanggarantambah = (entitas1, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
-        .where("e.kode_mata_anggaran", "BKK")
+        .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("c.kode_entitas", entitas1);
 
       // console.log(data);
@@ -617,7 +617,7 @@ let getmataanggaran = (kdmatanggaran) => {
       let data = db.knex1
         .select("a.kode_mata_anggaran", "a.nama_mata_anggaran")
         .from("r_mata_anggaran as a")
-        .where("a.kode_mata_anggaran", "BKK");
+        .where("a.kode_mata_anggaran", kdmatanggaran);
 
       // console.log(data);
       resolve(data);
@@ -628,7 +628,7 @@ let getmataanggaran = (kdmatanggaran) => {
   });
 };
 
-let getkelmataanggaran = (kdmatanggaran) => {
+let getkelmataanggaran = (kdkelmatanggaran) => {
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -637,7 +637,7 @@ let getkelmataanggaran = (kdmatanggaran) => {
           "a.nama_kelompok_mata_anggaran"
         )
         .from("r_kelompok_mata_anggaran as a")
-        .where("a.kode_kelompok_mata_anggaran", "BK");
+        .where("a.kode_kelompok_mata_anggaran", kdkelmatanggaran);
 
       // console.log(data);
       resolve(data);
@@ -648,7 +648,7 @@ let getkelmataanggaran = (kdmatanggaran) => {
   });
 };
 
-let getotalkelmataanggaran = (entitas1, kelkdmata) => {
+let getotalkelmataanggaran = (entitas1, kdkelmatanggaran) => {
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -667,7 +667,7 @@ let getotalkelmataanggaran = (entitas1, kelkdmata) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_pengajuan", 2)
-        .where("e.kode_kelompok_mata_anggaran", "BK")
+        .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("b.kode_entitas", entitas1);
       // console.log(data);
       resolve(data);
@@ -695,7 +695,7 @@ let getkelmataanggaranfy = (entitas1, kdkelmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
-        .where("e.kode_kelompok_mata_anggaran", "BK")
+        .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("b.kode_entitas", entitas1);
 
       // console.log(data);
@@ -725,7 +725,7 @@ let getsumtopupkelmataanggaran = (entitas1, kdkelmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status", 2)
-        .where("e.kode_kelompok_mata_anggaran", "BK")
+        .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("c.kode_entitas", entitas1);
       // .groupBy("a.id_anggaran");
 
@@ -756,7 +756,7 @@ let getsumswitchkelmatanggarankurang = (entitas1, kdkelmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
-        .where("e.kode_kelompok_mata_anggaran", "BK")
+        .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("c.kode_entitas", entitas1);
 
       // console.log(data);
@@ -786,7 +786,7 @@ let getsumswitchkelmatanggarantambah = (entitas1, kdkelmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
-        .where("e.kode_kelompok_mata_anggaran", "BK")
+        .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("c.kode_entitas", entitas1);
 
       // console.log(data);

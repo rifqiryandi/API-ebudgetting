@@ -122,25 +122,25 @@ function reportrealisasi(req, res) {
 
         // console.log(anggaranfy[0].nominal);
         if (realisasicse[0].nominal === null) {
-          nominalrealisasicse = "-";
+          nominalrealisasicse = 0;
         } else {
           nominalrealisasicse = realisasicse[0].nominal;
         }
 
         if (realisasidir[0].nominal === null) {
-          nominalrealisasidir = "-";
+          nominalrealisasidir = 0;
         } else {
           nominalrealisasidir = realisasidir[0].nominal;
         }
 
         if (realisasicomm[0].nominal === null) {
-          nominalrealisasicomm = "-";
+          nominalrealisasicomm = 0;
         } else {
           nominalrealisasicomm = realisasicomm[0].nominal;
         }
 
         if (anggaranfycse[0].nominal === null) {
-          nominalanggarancsefy = "-";
+          nominalanggarancsefy = 0;
         } else {
           nominalanggarancsefy =
             anggaranfycse[0].nominal +
@@ -150,7 +150,7 @@ function reportrealisasi(req, res) {
         }
 
         if (anggaranfydir[0].nominal === null) {
-          nominalanggarandirfy = "-";
+          nominalanggarandirfy = 0;
         } else {
           nominalanggarandirfy =
             anggaranfydir[0].nominal +
@@ -160,7 +160,7 @@ function reportrealisasi(req, res) {
         }
 
         if (anggaranfycomm[0].nominal === null) {
-          nominalanggarancomfy = "-";
+          nominalanggarancomfy = 0;
         } else {
           nominalanggarancomfy =
             anggaranfycomm[0].nominal +
@@ -344,7 +344,7 @@ function reportrealisasi(req, res) {
       // console.log(mataanggaranswitchcommplus);
 
       if (anggaranfycse[0].nominal === null) {
-        nominalmataanggarancsefy = "-";
+        nominalmataanggarancsefy = 0;
       } else {
         nominalmataanggarancsefy =
           anggaranfycse[0].nominal +
@@ -354,7 +354,7 @@ function reportrealisasi(req, res) {
       }
 
       if (anggaranfydir[0].nominal === null) {
-        nominalmataanggarandirfy = "-";
+        nominalmataanggarandirfy = 0;
       } else {
         nominalmataanggarandirfy =
           anggaranfydir[0].nominal +
@@ -364,7 +364,7 @@ function reportrealisasi(req, res) {
       }
 
       if (anggaranfycomm[0].nominal === null) {
-        nominalmataanggarancomfy = "-";
+        nominalmataanggarancomfy = 0;
       } else {
         nominalmataanggarancomfy =
           anggaranfycomm[0].nominal +
@@ -502,7 +502,7 @@ function reportrealisasi(req, res) {
       let nominalkelmataanggarancomfy;
 
       if (anggaranfycsekel[0].nominal === null) {
-        nominalkelmataanggarancsefy = "-";
+        nominalkelmataanggarancsefy = 0;
       } else {
         nominalkelmataanggarancsefy =
           anggaranfycsekel[0].nominal +
@@ -512,7 +512,7 @@ function reportrealisasi(req, res) {
       }
 
       if (anggaranfydirkel[0].nominal === null) {
-        nominalkelmataanggarandirfy = "-";
+        nominalkelmataanggarandirfy = 0;
       } else {
         nominalkelmataanggarandirfy =
           anggaranfydirkel[0].nominal +
@@ -522,7 +522,7 @@ function reportrealisasi(req, res) {
       }
 
       if (anggaranfycommkel[0].nominal === null) {
-        nominalkelmataanggarancomfy = "-";
+        nominalkelmataanggarancomfy = 0;
       } else {
         nominalkelmataanggarancomfy =
           anggaranfycommkel[0].nominal +
