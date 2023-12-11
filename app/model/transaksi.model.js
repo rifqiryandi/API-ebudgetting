@@ -168,7 +168,7 @@ let listtransaksi = (
       .first(),
     db.knex1
       .select(
-        // "e.kode_entitas",
+        "e.kode_entitas",
         "b.kode_departement",
         "f.kode_kelompok_mata_anggaran",
         "c.kode_mata_anggaran",

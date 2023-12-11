@@ -57,4 +57,10 @@ module.exports = function (app) {
     [authJwt.verifyToken],
     controller.sponsorship
   );
+
+  app.post(
+    "/reporting/tesarray",
+    [authJwt.verifyToken],
+    controller.tesarray
+  );
 };

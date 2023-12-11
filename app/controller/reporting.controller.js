@@ -950,6 +950,15 @@ function sponsorship(req, res) {
     });
 }
 
+function tesarray(req, res) {
+  // var arrays = [[1,2,3], [4,5], [6]];
+  // var flat = [];
+  //   for (var i = 0; i < arrays.length; i++) {
+  //       flat = flat.concat(arrays[i]);
+  //   }
+  //   console.log(flat);
+}
+
 module.exports = {
   reportrealisasi,
   updatestatusnotif,
@@ -959,4 +968,5 @@ module.exports = {
   totalrealisasi,
   totalanggaran,
   sponsorship,
+  tesarray
 };
