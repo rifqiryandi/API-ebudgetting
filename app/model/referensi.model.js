@@ -730,7 +730,7 @@ let getsubmatanggaran = (kdkelmatanggaran, kdmatanggaran) => {
           } else {
           }
         })
-        .orderBy("a.create_date", "desc");
+        .orderBy("a.kode_sub_mata_anggaran", "asc");
 
       // console.log(data);
       resolve(data);
