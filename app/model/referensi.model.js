@@ -541,7 +541,7 @@ let getmatanggaran = (kdkelmatanggaran) => {
         .whereNot("a.status_aktif", 2)
         .whereILike("a.kode_kelompok_mata_anggaran", `%${kdkelmatanggaran || ""}%`)
         // .where("a.kode_kelompok_mata_anggaran", kdkelmatanggaran)
-        // .orderBy("a.create_date", "desc");
+        // .orderBy("a.create_date", "desc")zs
         .orderBy("a.nama_mata_anggaran", "asc");
       // console.log(data);
       resolve(data);
