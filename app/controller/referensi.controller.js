@@ -8,7 +8,8 @@ let CONF = require("../config/config");
 
 function getdepartemen(req, res) {
   let entitas = req.body.entitas;
-  let query = model.getdepartemen(entitas);
+  let status = req.body.status;
+  let query = model.getdepartemen(entitas,status);
   query
     .then((result) => {
       // console.log(result.length);

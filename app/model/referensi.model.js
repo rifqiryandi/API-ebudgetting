@@ -24,16 +24,22 @@ let getprefixpk = () => {
   });
 };
 
-let getdepartemen = (entitas) => {
+let getdepartemen = (entitas,status) => {
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
         .from("r_departemen as a")
         .select("a.*", "c.nama_entitas")
         .leftJoin("r_entitas as c", "a.kode_entitas", "c.kode_entitas")
-        .whereNot({
-          status: 2,
+        .modify(function (queryBuilder) {
+          if (status !== "") {
+            queryBuilder.where("a.status", status)
+          }else {
+          }
         })
+        // .whereNot({
+        //   status: 2,
+        // })
         .whereILike("a.kode_entitas", `%${entitas || ""}%`)
         .orderBy("a.create_date", "desc");
       // console.log(data);
@@ -533,8 +539,10 @@ let getmatanggaran = (kdkelmatanggaran) => {
           "c.kode_kelompok_mata_anggaran"
         )
         .whereNot("a.status_aktif", 2)
-        .where("a.kode_kelompok_mata_anggaran", kdkelmatanggaran)
-        .orderBy("a.create_date", "desc");
+        .whereILike("a.kode_kelompok_mata_anggaran", `%${kdkelmatanggaran || ""}%`)
+        // .where("a.kode_kelompok_mata_anggaran", kdkelmatanggaran)
+        // .orderBy("a.create_date", "desc");
+        .orderBy("a.nama_mata_anggaran", "asc");
       // console.log(data);
       resolve(data);
     } catch (error) {

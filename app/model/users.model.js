@@ -78,13 +78,19 @@ let insusers = (
   });
 };
 
-let listuser = () => {
+let listuser = (status) => {
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
         .from("r_user as a")
         .select("a.*")
-        .orderBy("a.create_date", "desc");
+        .modify(function (queryBuilder) {
+          if (status !== "") {
+            queryBuilder.where("a.statususer", status)
+          }else {
+          }
+        })
+        .orderBy("a.departemen", "asc");
       // console.log(data);
       resolve(data);
     } catch (error) {

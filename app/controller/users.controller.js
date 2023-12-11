@@ -62,11 +62,12 @@ function insusers(req, res) {
 }
 
 function listuser(req, res) {
-  let query = model.listuser();
+  let status = req.body.status;
+  let query = model.listuser(status);
   query
     .then((result) => {
-      // console.log(result);
-      if (result) {
+      // console.log(result.length);
+      if (result.length >= 1) {
         res.status(200).json({
           responCode: 200,
           Msg: "Data Tersedia",
