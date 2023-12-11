@@ -503,11 +503,11 @@ let listpresentasianggaran = (
       .first(),
     db.knex1
       .select(
-        "a.*"
+        "a.*",
         // "a.*",
         // "c.nama_sub_mata_anggaran",
         // "b.nama_departement",
-        // "e.deskripsi as bulan",
+        "e.deskripsi as bulan"
         // "d.nominal as nominal_fy"
       )
       .from("m_presentasi_anggaran as a")
