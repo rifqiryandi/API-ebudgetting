@@ -640,7 +640,7 @@ let updatematanggaran = (
           nama_mata_anggaran: nmmatanggaran_p,
           status_aktif: status,
           create_by: userid_p,
-          create_date: null,
+          // create_date: null,
           update_date: dateTime,
         });
       // console.log(data);
@@ -835,7 +835,7 @@ let updatesubmatanggaran = (
           nama_sub_mata_anggaran: nmsubmatanggaran_p,
           status_aktif: status,
           create_by: userid_p,
-          create_date: null,
+          // create_date: null,
           update_date: dateTime,
         });
       // console.log(data);
