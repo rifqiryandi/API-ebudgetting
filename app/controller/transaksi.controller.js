@@ -379,7 +379,9 @@ function getidkegiatan(req, res) {
   let idkegiatan = req.body.idkegiatan;
   let status = req.body.status;
   let kddepartemen = req.body.kddepartemen;
-  let query = model.getidkegiatan(idkegiatan, status, kddepartemen);
+  let kdsubmatanggaran = req.body.kdsubmatanggaran;
+  let bulan = req.body.bulan;
+  let query = model.getidkegiatan(idkegiatan, status, kddepartemen, kdsubmatanggaran,bulan);
   query
     .then(async (result) => {
       let bsu_keg;
@@ -421,7 +423,7 @@ function getidkegiatan(req, res) {
 
       // console.log(data_arr);
       // let sisa =
-      if (result) {
+      if (result.length > 1) {
         res.status(200).json({
           responCode: 200,
           Msg: "Data Tersedia",
@@ -536,7 +538,8 @@ function inspengajuanpb(req, res) {
 
 function getpengajuanpk(req, res) {
   let id_pengajuan = req.body.id_pengajuan;
-  let query = model.getpengajuanpk(id_pengajuan);
+  let kddepartemen = req.body.kddepartemen;
+  let query = model.getpengajuanpk(id_pengajuan,kddepartemen);
   query
     .then(async (result) => {
       // console.log(result);
@@ -1322,74 +1325,74 @@ function getidpengajuan(req, res) {
   }
 }
 
-function getidkegiatan(req, res) {
-  let idkegiatan = req.body.idkegiatan;
-  let status = req.body.status;
-  let kddepartemen = req.body.kddepartemen;
-  let query = model.getidkegiatan(idkegiatan, status, kddepartemen);
-  query
-    .then(async (result) => {
-      let bsu_keg;
-      var data_arr = [];
-      for (let i = 0; i < result.length; i++) {
-        let id_anggaran = result[i].id_anggaran;
-        let getsisakegiatan = await model.getsisanggarankegiatan(id_anggaran);
-        let nominal_anggaran = getsisakegiatan[0].nominal_a;
-        let nominal_kegiatan = getsisakegiatan[0].nominal_k;
-        // console.log(getsisakegiatan);
-        if (nominal_kegiatan == null) {
-          bsu_keg = 0;
-        } else {
-          bsu_keg = nominal_kegiatan;
-        }
-        let penjumlah = nominal_anggaran - bsu_keg;
-        data_arr.push({
-          id: result[i].id,
-          id_anggaran: result[i].id_anggaran,
-          kode_sub_mata_anggaran: result[i].kode_sub_mata_anggaran,
-          kode_departemen: result[i].kode_departement,
-          uraian_kegiatan: result[i].kegiatan,
-          nominal: result[i].nominal,
-          tahun: result[i].tahun,
-          create_by: result[i].create_by,
-          create_date: result[i].create_date,
-          update_date: result[i].update_date,
-          keterangan: result[i].keterangan,
-          status_anggaran: result[i].status_anggaran,
-          susunan_anggaran: result[i].susunan_anggaran,
-          nama_sub_mata_anggaran: result[i].nama_sub_mata_anggaran,
-          nama_departement: result[i].nama_departement,
-          sisa_nominal: penjumlah,
-          nominal_anggaran: nominal_anggaran,
-          sisa_nominal_pengajuan: result[i].sisa_pengajuan,
-        });
-        // console.log(bsu_keg);
-      }
+// function getidkegiatan(req, res) {
+//   let idkegiatan = req.body.idkegiatan;
+//   let status = req.body.status;
+//   let kddepartemen = req.body.kddepartemen;
+//   let query = model.getidkegiatan(idkegiatan, status, kddepartemen);
+//   query
+//     .then(async (result) => {
+//       let bsu_keg;
+//       var data_arr = [];
+//       for (let i = 0; i < result.length; i++) {
+//         let id_anggaran = result[i].id_anggaran;
+//         let getsisakegiatan = await model.getsisanggarankegiatan(id_anggaran);
+//         let nominal_anggaran = getsisakegiatan[0].nominal_a;
+//         let nominal_kegiatan = getsisakegiatan[0].nominal_k;
+//         // console.log(getsisakegiatan);
+//         if (nominal_kegiatan == null) {
+//           bsu_keg = 0;
+//         } else {
+//           bsu_keg = nominal_kegiatan;
+//         }
+//         let penjumlah = nominal_anggaran - bsu_keg;
+//         data_arr.push({
+//           id: result[i].id,
+//           id_anggaran: result[i].id_anggaran,
+//           kode_sub_mata_anggaran: result[i].kode_sub_mata_anggaran,
+//           kode_departemen: result[i].kode_departement,
+//           uraian_kegiatan: result[i].kegiatan,
+//           nominal: result[i].nominal,
+//           tahun: result[i].tahun,
+//           create_by: result[i].create_by,
+//           create_date: result[i].create_date,
+//           update_date: result[i].update_date,
+//           keterangan: result[i].keterangan,
+//           status_anggaran: result[i].status_anggaran,
+//           susunan_anggaran: result[i].susunan_anggaran,
+//           nama_sub_mata_anggaran: result[i].nama_sub_mata_anggaran,
+//           nama_departement: result[i].nama_departement,
+//           sisa_nominal: penjumlah,
+//           nominal_anggaran: nominal_anggaran,
+//           sisa_nominal_pengajuan: result[i].sisa_pengajuan,
+//         });
+//         // console.log(bsu_keg);
+//       }
 
-      // console.log(data_arr);
-      // let sisa =
-      if (result) {
-        res.status(200).json({
-          responCode: 200,
-          Msg: "Data Tersedia",
-          data: data_arr,
-        });
-      } else {
-        res.status(400).json({
-          responCode: 400,
-          Msg: "Data Tidak Tersedia",
-          //  nomor_ticket: result2[0].nomor_ticket,
-        });
-      }
-    })
-    .catch(function (error) {
-      res.status(500).json({
-        responCode: 500,
-        // 'Msg': (err.response.data.fault.message).trim(),
-        Msg: "Error Server",
-      });
-    });
-}
+//       // console.log(data_arr);
+//       // let sisa =
+//       if (result) {
+//         res.status(200).json({
+//           responCode: 200,
+//           Msg: "Data Tersedia",
+//           data: data_arr,
+//         });
+//       } else {
+//         res.status(400).json({
+//           responCode: 400,
+//           Msg: "Data Tidak Tersedia",
+//           //  nomor_ticket: result2[0].nomor_ticket,
+//         });
+//       }
+//     })
+//     .catch(function (error) {
+//       res.status(500).json({
+//         responCode: 500,
+//         // 'Msg': (err.response.data.fault.message).trim(),
+//         Msg: "Error Server",
+//       });
+//     });
+// }
 
 function topupanggaran(req, res) {
   let idanggaran = req.body.idanggaran;

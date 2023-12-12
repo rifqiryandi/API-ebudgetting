@@ -387,7 +387,7 @@ const getidanggaran = (
   });
 };
 
-const getidkegiatan = (idkegiatan, status, kddepartemen) => {
+const getidkegiatan = (idkegiatan, status, kddepartemen, kdsubmatanggaran,bulan) => {
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -412,6 +412,9 @@ const getidkegiatan = (idkegiatan, status, kddepartemen) => {
           "b.kode_departement"
         )
         // .whereNot("h.status_anggaran", 3)
+        .where("a.bulan_kegiatan", bulan)
+        
+        .where("h.kode_sub_mata_anggaran", kdsubmatanggaran)
         .whereNot("a.status", 2)
         .whereILike("a.id", `%${idkegiatan || ""}%`)
         .whereILike("a.status", `%${status || ""}%`)
@@ -1016,7 +1019,7 @@ let inspengajuan = (
   });
 };
 
-const getpengajuanpk = (id_pengajuan) => {
+const getpengajuanpk = (id_pengajuan,kddepartemen) => {
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -1049,6 +1052,7 @@ const getpengajuanpk = (id_pengajuan) => {
         )
         .where("a.status_pengajuan", 1)
         .where("a.jenis_pengajuan", "PK")
+        .whereILike("h.kode_departemen", `%${kddepartemen || ""}%`)
         .whereILike("a.id", `%${id_pengajuan || ""}%`)
         .groupBy(
           "a.nominal",

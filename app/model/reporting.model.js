@@ -288,12 +288,20 @@ let getdepartmen = (kode_entitas) => {
   });
 };
 
-let totalrealisasi = () => {
+let totalrealisasi = (opexs) => {
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
         .sum("a.nominal as nominal")
         .from("h_realisasi as a")
+        .leftJoin("h_pengajuan as b", "a.id_pengajuan", "b.id")
+        .leftJoin("m_anggaran as c", "b.id_anggaran", "c.id")
+        .leftJoin(
+          "r_sub_mata_anggaran as ca",
+          "c.kode_sub_mata_anggaran",
+          "ca.kode_sub_mata_anggaran"
+        )
+        .where("ca.opex", opexs)
         .where("a.status_pengajuan", 2);
       // console.log(data);
       resolve(data);
@@ -304,13 +312,19 @@ let totalrealisasi = () => {
   });
 };
 
-let totalanggaran = () => {
+let totalanggaran = (opexs) => {
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
         .sum("a.nominal as nominal_anggaran")
         .sum("a.sisa_pengajuan as sisa_anggaran")
         .from("m_anggaran as a")
+        .leftJoin(
+          "r_sub_mata_anggaran as c",
+          "c.kode_sub_mata_anggaran",
+          "a.kode_sub_mata_anggaran"
+        )
+        .where("c.opex", opexs)
         .where("a.status_anggaran", 2);
       // console.log(data);
       resolve(data);

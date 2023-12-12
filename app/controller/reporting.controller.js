@@ -245,6 +245,10 @@ function reportrealisasi(req, res) {
         }
         // fydir = nominalanggarandirfy - nominalrealisasidir;
         // fycomm = nominalanggarancomfy - nominalrealisasicomm;
+        let totalsubrealisasi = nominalrealisasicse + nominalrealisasidir + nominalrealisasicomm;
+        let totalsubanggaran = nominalanggarancsefy + nominalanggarandirfy + nominalanggarancomfy;
+        let subpresentase = fypersencse;
+        let totalsubsisanggaran = sisaanggarancse + sisaanggarandir + sisaanggarancomm;
 
         data_arr.push({
           kode_sub_mata_anggaran: result[i].kode_sub_mata_anggaran,
@@ -269,6 +273,13 @@ function reportrealisasi(req, res) {
           fycomm: fypersencomm,
           ytdcomm: ytdpersencomm,
           sisaanggarancomm: sisaanggarancomm,
+
+          totalsubrealisasi:totalsubrealisasi,
+          totalsubanggaran:totalsubanggaran,
+          subpresentase:subpresentase,
+          totalsubsisanggaran:totalsubsisanggaran,
+
+
         });
         // console.log(nominalanggaranfy);
       }
@@ -662,6 +673,13 @@ function reportrealisasi(req, res) {
         nominalkelmataanggarancomfy - realisasicommkel[0].nominal;
       // console.log(realisasicsekel);
 
+      
+      let totalrealisasikelmata = realisasicsekel[0].nominal + realisasidirkel[0].nominal + realisasicommkel[0].nominal;
+      let totalanggarankelmata = nominalkelmataanggarancsefy + nominalkelmataanggarandirfy + nominalkelmataanggarancomfy;
+      let kelpresentease = kelmtfycse;
+      let totalsisaanggarankelmata = kelsisamtanggarancse + kelsisamtanggarandir + kelsisamtanggarancomm;
+
+
       data_arrkelmataanggaran.push({
         kode_kelompok_mata_anggaran:
           getkelmataanggaran[0].kode_kelompok_mata_anggaran,
@@ -685,8 +703,17 @@ function reportrealisasi(req, res) {
         mtfycomm: kelmtfycomm,
         mtytdcomm: kelmtytdcomm,
         sisamtanggarancomm: kelsisamtanggarancomm,
+        totalrealisasikelmata:totalrealisasikelmata,
+        totalanggarankelmata:totalanggarankelmata,
+        kelpresentease:kelpresentease,
+        totalsisaanggarankelmata:totalsisaanggarankelmata
       });
       // console.log(data_arrkelmataanggaran);
+      let totalrealisasimata = realisasicse[0].nominal + realisasidir[0].nominal + realisasicomm[0].nominal;
+      let totalanggaranmata = nominalmataanggarancsefy + nominalmataanggarandirfy + nominalmataanggarancomfy;
+      let presentasemata = mtfycse;
+      let totalsisaanggaranmata = sisamtanggarancse + sisamtanggarandir + sisamtanggarancomm;
+
       data_arrmataanggaran.push({
         kode_mata_anggaran: getmataanggaran[0].kode_mata_anggaran,
         nama_mata_anggaran: getmataanggaran[0].nama_mata_anggaran,
@@ -708,6 +735,10 @@ function reportrealisasi(req, res) {
         mtfycomm: mtfycomm,
         mtytdcomm: mtytdcomm,
         sisamtanggarancomm: sisamtanggarancomm,
+        totalrealisasimata:totalrealisasimata,
+        totalanggaranmata:totalanggaranmata,
+        presentasemata:presentasemata,
+        totalsisaanggaranmata:totalsisaanggaranmata,
       });
       // console.log(data_arrmataanggaran);
       const datagabung = data_arrkelmataanggaran.concat(
@@ -871,7 +902,8 @@ function reportrealisasidepart(req, res) {
 }
 
 function totalrealisasi(req, res) {
-  let query = model.totalrealisasi();
+  let opexs = req.body.opexs;
+  let query = model.totalrealisasi(opexs);
   query
     .then((result) => {
       // console.log(result.length);
@@ -898,7 +930,8 @@ function totalrealisasi(req, res) {
 }
 
 function totalanggaran(req, res) {
-  let query = model.totalanggaran();
+  let opexs = req.body.opexs;
+  let query = model.totalanggaran(opexs);
   query
     .then((result) => {
       // console.log(result.length);
