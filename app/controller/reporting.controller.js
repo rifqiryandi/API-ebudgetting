@@ -984,6 +984,38 @@ function sponsorship(req, res) {
 }
 
 function tesarray(req, res) {
+  let kdmatanggaran = req.body.kdmatanggaran; 
+  let query = model.reportrealisasi(kdmatanggaran);
+  query
+    .then(async (result) => {
+      // console.log(result)
+      for (let i = 0; i < result.length; i++) {
+        let anggaranfy = await model.getanggaranfy(
+          kode_sub_mata_anggaran,
+          entitas1
+        );
+
+      }
+      // if (result) {
+      //   res.status(200).json({
+      //     responCode: 200,
+      //     Msg: "Data Tersedia",
+      //     data: result,
+      //   });
+      // } else {
+      //   res.status(400).json({
+      //     responCode: 400,
+      //     Msg: "Data Tidak Tersedia",
+      //   });
+      // }
+    })
+    .catch(function (error) {
+      res.status(500).json({
+        responCode: 500,
+        Msg: "Eror Database",
+      });
+      console.log(error);
+    });
   // var arrays = [[1,2,3], [4,5], [6]];
   // var flat = [];
   //   for (var i = 0; i < arrays.length; i++) {
