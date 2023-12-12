@@ -98,7 +98,8 @@ let listtransaksi = (
   status,
   perPage,
   currentPage,
-  cari
+  cari,
+  tahun
 ) => {
   var pagination = {};
   var per_page = perPage;
@@ -165,6 +166,7 @@ let listtransaksi = (
         }
       })
       .whereILike("a.status_anggaran", `%${status || ""}%`)
+      .whereILike("a.tahun", `%${tahun || ""}%`)
       .first(),
     db.knex1
       .select(
@@ -243,6 +245,7 @@ let listtransaksi = (
         }
       })
       .whereILike("a.status_anggaran", `%${status || ""}%`)
+      .whereILike("a.tahun", `%${tahun || ""}%`)
       .orderBy([{ column: "a.create_date", order: "desc" }]),
   ])
     .then(([total, rows]) => {

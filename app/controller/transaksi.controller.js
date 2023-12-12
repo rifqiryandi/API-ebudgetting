@@ -57,6 +57,7 @@ function listtransaksi(req, res) {
   let perPage = req.body.perPage;
   let currentPage = req.body.currentPage;
   let cari = req.body.cari;
+  let tahun = req.body.tahun;
   let query = model.listtransaksi(
     kdsubmatanggaran,
     kddepartemen,
@@ -64,7 +65,8 @@ function listtransaksi(req, res) {
     status,
     perPage,
     currentPage,
-    cari
+    cari,
+    tahun
   );
   query
     .then((result) => {
