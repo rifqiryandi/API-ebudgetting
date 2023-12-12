@@ -812,6 +812,132 @@ let getsumswitchkelmatanggarantambah = (entitas1, kdkelmatanggaran) => {
   });
 };
 
+let getanggaranfydepart = (kode_sub_mata_anggaran, kddepartemen) => {
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.nominal as nominal")
+        .from("m_anggaran as a")
+        .leftJoin(
+          "r_departemen as b",
+          "a.kode_departemen",
+          "b.kode_departement"
+        )
+        .where("a.tahun", 2023)
+        .where("a.status_anggaran", 2)
+        .where("a.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
+        .where("b.kode_departement", kddepartemen);
+
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      console.log(error);
+      // resolve(false);
+    }
+  });
+};
+
+let getsumtopupanggarandepart = (kode_sub_mata_anggaran, kddepartemen) => {
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.nominal_topup as nominaltopup")
+        .from("h_topup_anggaran as a")
+        .leftJoin("m_anggaran as b", "a.id_anggaran", "b.id")
+        .leftJoin(
+          "r_departemen as c",
+          "b.kode_departemen",
+          "c.kode_departement"
+        )
+        .where("a.status", 2)
+        .where("b.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
+        .where("c.kode_departement", kddepartemen);
+      // .groupBy("a.id_anggaran");
+
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      // console.log(error);
+      resolve(false);
+    }
+  });
+};
+
+let anggaranswitchcsemindepart = (kode_sub_mata_anggaran, kddepartemen) => {
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.bsu_inout as bsu_inout")
+        .from("h_m_anggaran as a")
+        .leftJoin("m_anggaran as b", "a.id_anggaran_awal", "b.id")
+        .leftJoin(
+          "r_departemen as c",
+          "b.kode_departemen",
+          "c.kode_departement"
+        )
+        .where("a.status_anggaran", 2)
+        .where("b.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
+        .where("c.kode_departement", kddepartemen);
+
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      // console.log(error);
+      resolve(false);
+    }
+  });
+};
+
+let anggaranswitchcseplusdepart = (kode_sub_mata_anggaran, kddepartemen) => {
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.bsu_inout as bsu_inout")
+        .from("h_m_anggaran as a")
+        .leftJoin("m_anggaran as b", "a.id_anggaran_final", "b.id")
+        .leftJoin(
+          "r_departemen as c",
+          "b.kode_departemen",
+          "c.kode_departement"
+        )
+        .where("a.status_anggaran", 2)
+        .where("b.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
+        .where("c.kode_departement", kddepartemen);
+
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      // console.log(error);
+      resolve(false);
+    }
+  });
+};
+
+let realisasidepart = (kode_sub_mata_anggaran, kddepartemen) => {
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.nominal as nominal")
+        .from("h_realisasi as a")
+        .leftJoin("h_pengajuan as d", "a.id_pengajuan", "d.id")
+        .leftJoin("m_anggaran as c", "d.id_anggaran", "c.id")
+        .leftJoin(
+          "r_departemen as b",
+          "c.kode_departemen",
+          "b.kode_departement"
+        )
+        .where("a.status_pengajuan", 2)
+        .where("c.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
+        .where("b.kode_departement", kddepartemen);
+
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      console.log(error);
+      // resolve(false);
+    }
+  });
+};
 
 
 module.exports = {
@@ -844,4 +970,9 @@ module.exports = {
   getsumswitchkelmatanggarankurang,
   getsumswitchkelmatanggarantambah,
   getkelmataanggaran,
+  getanggaranfydepart,
+  getsumtopupanggarandepart,
+  anggaranswitchcsemindepart,
+  anggaranswitchcseplusdepart,
+  realisasidepart
 };

@@ -854,30 +854,90 @@ function countnotifikasi(req, res) {
 }
 
 function reportrealisasidepart(req, res) {
-  let kode_entitas = req.body.kode_entitas;
-  let query = model.reportrealisasi(kode_entitas);
+  let kdmatanggaran = req.body.kdmatanggaran; 
+  let kddepartemen = req.body.kddepartemen; 
+  let query = model.reportrealisasi(kdmatanggaran);
   query
     .then(async (result) => {
+      // console.log(result)
       var data_arr = [];
-      // data_arr.push({});
       for (let i = 0; i < result.length; i++) {
         let kode_sub_mata_anggaran = result[i].kode_sub_mata_anggaran;
+        let anggaranfy = await model.getanggaranfydepart(
+          kode_sub_mata_anggaran,
+          kddepartemen
+        );
+        let anggarantopupdepart = await model.getsumtopupanggarandepart(
+          kode_sub_mata_anggaran,
+          kddepartemen
+        );
+        let anggaranswitchcsemindepart = await model.anggaranswitchcsemindepart(
+          kode_sub_mata_anggaran,
+          kddepartemen
+        );
+        let anggaranswitchcseplusdepart = await model.anggaranswitchcseplusdepart(
+          kode_sub_mata_anggaran,
+          kddepartemen
+        );
+        let realisasidepart = await model.realisasidepart(
+          kode_sub_mata_anggaran,
+          kddepartemen
+        );
 
-        // console.log(kode_sub_mata_anggaran);
-        // // buat ambil anggaranfycse
-        // let anggaranfycse = await model.reportrealisasidepart(
-        //   kode_sub_mata_anggaran,
-        //   kode_entitas
-        // );
-        let getdepartmen = await model.getdepartmen(kode_entitas);
-        console.log(getdepartmen);
+        if (realisasidepart[0].nominal === null) {
+          realisasidepart = 0;
+        } else {
+          realisasidepart = realisasicse[0].nominal;
+        }
+        
+        if (anggaranfy[0].nominal === null) {
+          anggaranfy = 0;
+        } else {
+          anggaranfy =
+          anggaranfy[0].nominal +
+          anggarantopupdepart[0].nominaltopup -
+          anggaranswitchcsemindepart[0].bsu_inout +
+          anggaranswitchcseplusdepart[0].bsu_inout;
+        }
+        let getpresentaseanggaran = await model.getpresentaseanggaran();
+        let presentase = getpresentaseanggaran[0].presentasi / 100;
+        let anggaranytddepart = Math.floor(anggaranfy * presentase);
+
+        let sisaanggarandepart = anggaranfy - realisasidepart;
+
+        let fydepart = (
+          (realisasidepart / anggaranfy) *
+          100
+        ).toFixed(1);
+
+        if (isNaN(fydepart) == 0) {
+          fydepart = fydepart;
+        } else {
+          fydepart = 0;
+        }
+
+        let ytddepart = (
+          (realisasidepart / (presentase * anggaranfy)) *
+          100
+        ).toFixed(1);
+
+        if (isNaN(ytddepart) == 0) {
+          ytddepart = ytddepart;
+        } else {
+          ytddepart = 0;
+        }
+
         data_arr.push({
           kode_sub_mata_anggaran: result[i].kode_sub_mata_anggaran,
           nama_sub_mata_anggaran: result[i].nama_sub_mata_anggaran,
+          nominalrealisasidepart: realisasidepart,
+          anggaranfydepart: anggaranfy,
+          anggaranytddepart: anggaranytddepart,
+          fycse: fydepart,
+          ytdcse: ytddepart,
+          sisaanggarancse: sisaanggarandepart,
         });
-        // console.log(anggaranfycse);
-        // let getdepartmen = await model.reportrealisasidepart(kode_entitas);
-        // console.log(data_arr);
+        // console.log(ytddepart)
       }
       if (result) {
         res.status(200).json({
@@ -897,7 +957,7 @@ function reportrealisasidepart(req, res) {
         responCode: 500,
         Msg: "Eror Database",
       });
-      // console.log(error);
+      console.log(error);
     });
 }
 
@@ -983,24 +1043,98 @@ function sponsorship(req, res) {
     });
 }
 
-function tesarray(req, res) {
-  let kdmatanggaran = req.body.kdmatanggaran; 
-  let query = model.reportrealisasi(kdmatanggaran);
+function reportrealisasideparttes(kdmatanggaran, kddepartemen) {
+  let kdmatanggarantes = kdmatanggaran; 
+  let kddepartementes = kddepartemen; 
+  console.log(kdmatanggarantes,kdmatanggarantes);
+  let query = model.reportrealisasi(kdmatanggarantes);
   query
     .then(async (result) => {
       // console.log(result)
+      var data_arr = [];
       for (let i = 0; i < result.length; i++) {
-        let anggaranfy = await model.getanggaranfy(
+        let kode_sub_mata_anggaran = result[i].kode_sub_mata_anggaran;
+        let anggaranfy = await model.getanggaranfydepart(
           kode_sub_mata_anggaran,
-          entitas1
+          kddepartementes
+        );
+        let anggarantopupdepart = await model.getsumtopupanggarandepart(
+          kode_sub_mata_anggaran,
+          kddepartementes
+        );
+        let anggaranswitchcsemindepart = await model.anggaranswitchcsemindepart(
+          kode_sub_mata_anggaran,
+          kddepartementes
+        );
+        let anggaranswitchcseplusdepart = await model.anggaranswitchcseplusdepart(
+          kode_sub_mata_anggaran,
+          kddepartementes
+        );
+        let realisasidepart = await model.realisasidepart(
+          kode_sub_mata_anggaran,
+          kddepartementes
         );
 
+        if (realisasidepart[0].nominal === null) {
+          realisasidepart = 0;
+        } else {
+          realisasidepart = realisasicse[0].nominal;
+        }
+        
+        if (anggaranfy[0].nominal === null) {
+          anggaranfy = 0;
+        } else {
+          anggaranfy =
+          anggaranfy[0].nominal +
+          anggarantopupdepart[0].nominaltopup -
+          anggaranswitchcsemindepart[0].bsu_inout +
+          anggaranswitchcseplusdepart[0].bsu_inout;
+        }
+        let getpresentaseanggaran = await model.getpresentaseanggaran();
+        let presentase = getpresentaseanggaran[0].presentasi / 100;
+        let anggaranytddepart = Math.floor(anggaranfy * presentase);
+
+        let sisaanggarandepart = anggaranfy - realisasidepart;
+
+        let fydepart = (
+          (realisasidepart / anggaranfy) *
+          100
+        ).toFixed(1);
+
+        if (isNaN(fydepart) == 0) {
+          fydepart = fydepart;
+        } else {
+          fydepart = 0;
+        }
+
+        let ytddepart = (
+          (realisasidepart / (presentase * anggaranfy)) *
+          100
+        ).toFixed(1);
+
+        if (isNaN(ytddepart) == 0) {
+          ytddepart = ytddepart;
+        } else {
+          ytddepart = 0;
+        }
+
+        data_arr.push({
+          kode_sub_mata_anggaran: result[i].kode_sub_mata_anggaran,
+          nama_sub_mata_anggaran: result[i].nama_sub_mata_anggaran,
+          nominalrealisasidepart: realisasidepart,
+          anggaranfydepart: anggaranfy,
+          anggaranytddepart: anggaranytddepart,
+          fycse: fydepart,
+          ytdcse: ytddepart,
+          sisaanggarancse: sisaanggarandepart,
+        });
+        console.log(ytddepart)
       }
       // if (result) {
       //   res.status(200).json({
       //     responCode: 200,
       //     Msg: "Data Tersedia",
-      //     data: result,
+      //     data: data_arr,
       //   });
       // } else {
       //   res.status(400).json({
@@ -1009,13 +1143,28 @@ function tesarray(req, res) {
       //   });
       // }
     })
-    .catch(function (error) {
-      res.status(500).json({
-        responCode: 500,
-        Msg: "Eror Database",
-      });
-      console.log(error);
-    });
+    // .catch(function (error) {
+    //   res.status(500).json({
+    //     responCode: 500,
+    //     Msg: "Eror Database",
+    //   });
+    //   console.log(error);
+    // });
+}
+
+function tesarray() {
+ let hu1 = "BKK";
+ let hu2 = "BUM753";
+
+  var result = reportrealisasideparttes.call(this,hu1,hu2);
+
+  // console.log(result);
+  // let kdmatanggaran = req.body.kdmatanggaran;
+  // let kddepartemen = req.body.kddepartemen;
+  // reportrealisasidepart("BKK","BUM753")
+
+  
+  // console.log(reportrealisasidepart);
   // var arrays = [[1,2,3], [4,5], [6]];
   // var flat = [];
   //   for (var i = 0; i < arrays.length; i++) {

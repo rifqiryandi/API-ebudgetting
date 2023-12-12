@@ -721,8 +721,9 @@ let listkegiatan = (
         } else {
         }
       })
-      .whereILike("h.status_anggaran", `%${status || ""}%`)
+      .whereILike("a.status", `%${status || ""}%`)
       .where("a.bulan_kegiatan", bulan)
+      .andWhereRaw(`YEAR(a.create_date) = year(now())`)
       .modify(function (queryBuilder) {
         if (params !== "") {
           queryBuilder.where((whereBuilder) =>
@@ -807,8 +808,9 @@ let listkegiatan = (
         } else {
         }
       })
-      .whereILike("h.status_anggaran", `%${status || ""}%`)
+      .whereILike("a.status", `%${status || ""}%`)
       .where("a.bulan_kegiatan", bulan)
+      .andWhereRaw(`YEAR(a.create_date) = year(now())`)
       .modify(function (queryBuilder) {
         if (params !== "") {
           queryBuilder.where((whereBuilder) =>
