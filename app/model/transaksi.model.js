@@ -95,6 +95,7 @@ let listtransaksi = (
   kdsubmatanggaran,
   kddepartemen,
   kelmatanggaran,
+  matanggaran,
   status,
   perPage,
   currentPage,
@@ -143,6 +144,11 @@ let listtransaksi = (
           queryBuilder.whereILike(
             "c.kode_kelompok_mata_anggaran",
             `%${kelmatanggaran || ""}%`
+          );
+        }  else if (matanggaran !== "") {
+          queryBuilder.whereILike(
+            "c.kode_mata_anggaran",
+            `%${matanggaran || ""}%`
           );
         } else {
         }

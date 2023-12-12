@@ -53,6 +53,7 @@ function listtransaksi(req, res) {
   let kdsubmatanggaran = req.body.kdsubmatanggaran;
   let kddepartemen = req.body.kddepartemen;
   let kelmatanggaran = req.body.kelmatanggaran;
+  let matanggaran = req.body.matanggaran;
   let status = req.body.status;
   let perPage = req.body.perPage;
   let currentPage = req.body.currentPage;
@@ -62,6 +63,7 @@ function listtransaksi(req, res) {
     kdsubmatanggaran,
     kddepartemen,
     kelmatanggaran,
+    matanggaran,
     status,
     perPage,
     currentPage,
