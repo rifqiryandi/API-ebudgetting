@@ -346,13 +346,15 @@ function listkegiatan(req, res) {
   let perPage = req.body.perPage;
   let currentPage = req.body.currentPage;
   let cari = req.body.cari;
+  let bulan = req.body.bulan;
   let query = model.listkegiatan(
     kdsubmatanggaran,
     kddepartemen,
     status,
     perPage,
     currentPage,
-    cari
+    cari,
+    bulan
   );
   query
     .then((result) => {

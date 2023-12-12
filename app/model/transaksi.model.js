@@ -675,7 +675,8 @@ let listkegiatan = (
   status,
   perPage,
   currentPage,
-  cari
+  cari,
+  bulan
 ) => {
   var pagination = {};
   var per_page = perPage;
@@ -721,6 +722,7 @@ let listkegiatan = (
         }
       })
       .whereILike("h.status_anggaran", `%${status || ""}%`)
+      .where("a.bulan_kegiatan", bulan)
       .modify(function (queryBuilder) {
         if (params !== "") {
           queryBuilder.where((whereBuilder) =>
@@ -806,6 +808,7 @@ let listkegiatan = (
         }
       })
       .whereILike("h.status_anggaran", `%${status || ""}%`)
+      .where("a.bulan_kegiatan", bulan)
       .modify(function (queryBuilder) {
         if (params !== "") {
           queryBuilder.where((whereBuilder) =>
