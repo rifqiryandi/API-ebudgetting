@@ -1043,123 +1043,82 @@ function sponsorship(req, res) {
     });
 }
 
-function reportrealisasideparttes(kdmatanggaran, kddepartemen) {
-  console.log(kdmatanggaran,kddepartemen);
+async function reportrealisasideparttes(kdmatanggaran, kddepartemen) {
+  // console.log(kdmatanggaran,kddepartemen);
+  var data_arr = [];
+  var data_arr2 = [];
   let kdmatanggarantes = kdmatanggaran; 
   let kddepartementes = kddepartemen; 
   // console.log(kdmatanggarantes,kddepartementes);
   let query = model.reportrealisasi(kdmatanggarantes);
-  query
+  let hasil = await query
     .then(async (result) => {
       // console.log(result)
-      var data_arr = [];
       for (let i = 0; i < result.length; i++) {
         let kode_sub_mata_anggaran = result[i].kode_sub_mata_anggaran;
-        let anggaranfy = await model.getanggaranfydepart(
-          kode_sub_mata_anggaran,
-          kddepartementes
-        );
-        let anggarantopupdepart = await model.getsumtopupanggarandepart(
-          kode_sub_mata_anggaran,
-          kddepartementes
-        );
-        let anggaranswitchcsemindepart = await model.anggaranswitchcsemindepart(
-          kode_sub_mata_anggaran,
-          kddepartementes
-        );
-        let anggaranswitchcseplusdepart = await model.anggaranswitchcseplusdepart(
-          kode_sub_mata_anggaran,
-          kddepartementes
-        );
-        let realisasidepart = await model.realisasidepart(
-          kode_sub_mata_anggaran,
-          kddepartementes
-        );
-
-        if (realisasidepart[0].nominal === null) {
-          realisasidepart = 0;
-        } else {
-          realisasidepart = realisasicse[0].nominal;
-        }
         
-        if (anggaranfy[0].nominal === null) {
-          anggaranfy = 0;
-        } else {
-          anggaranfy =
-          anggaranfy[0].nominal +
-          anggarantopupdepart[0].nominaltopup -
-          anggaranswitchcsemindepart[0].bsu_inout +
-          anggaranswitchcseplusdepart[0].bsu_inout;
-        }
-        let getpresentaseanggaran = await model.getpresentaseanggaran();
-        let presentase = getpresentaseanggaran[0].presentasi / 100;
-        let anggaranytddepart = Math.floor(anggaranfy * presentase);
-
-        let sisaanggarandepart = anggaranfy - realisasidepart;
-
-        let fydepart = (
-          (realisasidepart / anggaranfy) *
-          100
-        ).toFixed(1);
-
-        if (isNaN(fydepart) == 0) {
-          fydepart = fydepart;
-        } else {
-          fydepart = 0;
-        }
-
-        let ytddepart = (
-          (realisasidepart / (presentase * anggaranfy)) *
-          100
-        ).toFixed(1);
-
-        if (isNaN(ytddepart) == 0) {
-          ytddepart = ytddepart;
-        } else {
-          ytddepart = 0;
-        }
 
         data_arr.push({
           kode_sub_mata_anggaran: result[i].kode_sub_mata_anggaran,
           nama_sub_mata_anggaran: result[i].nama_sub_mata_anggaran,
-          nominalrealisasidepart: realisasidepart,
-          anggaranfydepart: anggaranfy,
-          anggaranytddepart: anggaranytddepart,
-          fycse: fydepart,
-          ytdcse: ytddepart,
-          sisaanggarancse: sisaanggarandepart,
+          // nominalrealisasidepart: realisasidepart,
+          // anggaranfydepart: anggaranfy,
+          // anggaranytddepart: anggaranytddepart,
+          // fycse: fydepart,
+          // ytdcse: ytddepart,
+          // sisaanggarancse: sisaanggarandepart,
         });
         // console.log(ytddepart)
       }
-      // if (result) {
-      //   res.status(200).json({
-      //     responCode: 200,
-      //     Msg: "Data Tersedia",
-      //     data: data_arr,
-      //   });
-      // } else {
-      //   res.status(400).json({
-      //     responCode: 400,
-      //     Msg: "Data Tidak Tersedia",
-      //   });
-      // }
+      // console.log(alldepart)
+      return data_arr
     })
-    // .catch(function (error) {
-    //   res.status(500).json({
-    //     responCode: 500,
-    //     Msg: "Eror Database",
-    //   });
-    //   console.log(error);
-    // });
+    let query2 = model.getdepartmen(711);
+    let alldepart =  await query2
+  .then(async (result2) => {
+    for (let i = 0; i < result2.length; i++) {
+      // let kode_departemen = result2[i].kode_departement;
+      data_arr2.push({
+        kode_departement: result2[i].kode_departement,
+      });
+    }
+    return data_arr2
+  })
+  let datall = [];
+    for (let a = 0; a < alldepart.length; a++) {
+      for (let b = 0; b < hasil.length; b++) {
+        // console.log(hasil[b].kode_sub_mata_anggaran)
+        let anggaranfy = await model.getanggaranfydepart(
+          hasil[b].kode_sub_mata_anggaran,
+          alldepart[a].kode_departement
+        );
+        datall.push(
+          anggaranfy[0].nominal
+        )
+      }
+      let namaDepart = alldepart[a].kode_departement
+      let newObjectData = {}
+      newObjectData[namaDepart] = datall
+      datall = []
+      console.log(newObjectData);
+    }
+    
+    return hasil
+    // return JSON.stringify(data_arr);
 }
 
-function tesarray() {
+async function tesarray(req,res) {
  let hu1 = "BKK";
  let hu2 = "BUM753";
 
-  var result = reportrealisasideparttes.call(this,hu1,hu2);
-
-  // console.log(result);
+  var result = await reportrealisasideparttes.call(this,hu1,hu2);
+  
+   res.status(200).json({
+          responCode: 200,
+          Msg: "Data Tersedia",
+          data: result,
+        });
+  // console.log(JSON.stringify(result));
   // let kdmatanggaran = req.body.kdmatanggaran;
   // let kddepartemen = req.body.kddepartemen;
   // reportrealisasidepart("BKK","BUM753")
