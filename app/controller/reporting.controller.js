@@ -1044,9 +1044,10 @@ function sponsorship(req, res) {
 }
 
 function reportrealisasideparttes(kdmatanggaran, kddepartemen) {
+  console.log(kdmatanggaran,kddepartemen);
   let kdmatanggarantes = kdmatanggaran; 
   let kddepartementes = kddepartemen; 
-  console.log(kdmatanggarantes,kdmatanggarantes);
+  // console.log(kdmatanggarantes,kddepartementes);
   let query = model.reportrealisasi(kdmatanggarantes);
   query
     .then(async (result) => {
@@ -1128,7 +1129,7 @@ function reportrealisasideparttes(kdmatanggaran, kddepartemen) {
           ytdcse: ytddepart,
           sisaanggarancse: sisaanggarandepart,
         });
-        console.log(ytddepart)
+        // console.log(ytddepart)
       }
       // if (result) {
       //   res.status(200).json({

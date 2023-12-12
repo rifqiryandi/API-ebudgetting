@@ -429,7 +429,7 @@ const getidkegiatan = (idkegiatan, status, kddepartemen, kdsubmatanggaran,bulan)
         .where("a.bulan_kegiatan", bulan)
         
         .where("h.kode_sub_mata_anggaran", kdsubmatanggaran)
-        .whereNot("a.status", 2)
+        // .whereNot("a.status", 2)
         .whereILike("a.id", `%${idkegiatan || ""}%`)
         .whereILike("a.status", `%${status || ""}%`)
         .whereILike("h.kode_departemen", `%${kddepartemen || ""}%`);
