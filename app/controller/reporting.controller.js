@@ -247,7 +247,19 @@ function reportrealisasi(req, res) {
         // fycomm = nominalanggarancomfy - nominalrealisasicomm;
         let totalsubrealisasi = nominalrealisasicse + nominalrealisasidir + nominalrealisasicomm;
         let totalsubanggaran = nominalanggarancsefy + nominalanggarandirfy + nominalanggarancomfy;
-        let subpresentase = fypersencse;
+        // anggaranytdcse = Math.floor(nominalanggarancsefy * presentase);
+        let totalsubangganytd = Math.floor(totalsubanggaran * presentase);
+        let subpresentase = (
+          (totalsubrealisasi / totalsubanggaran) *
+          100
+        ).toFixed(1);
+
+        if (isNaN(subpresentase) == 0) {
+          subpresentase = subpresentase;
+        } else {
+          subpresentase = 0;
+        }
+        // let subpresentase = fypersencse;
         let totalsubsisanggaran = sisaanggarancse + sisaanggarandir + sisaanggarancomm;
 
         data_arr.push({
@@ -276,6 +288,7 @@ function reportrealisasi(req, res) {
 
           totalsubrealisasi:totalsubrealisasi,
           totalsubanggaran:totalsubanggaran,
+          totalsubanggaranytd:totalsubangganytd,
           subpresentase:subpresentase,
           totalsubsisanggaran:totalsubsisanggaran,
 
