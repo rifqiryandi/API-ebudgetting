@@ -1346,7 +1346,7 @@ let getkodesubsponsorshiplist = () => {
         .from("r_sub_mata_anggaran as a")
         .whereIn(
           "a.kode_sub_mata_anggaran",
-          [550009, 550017, 550401, 550506, 550507]
+          [550009, 550017, 550401, 550506, 550507,580804]
         );
       // console.log(data);
       resolve(data);
