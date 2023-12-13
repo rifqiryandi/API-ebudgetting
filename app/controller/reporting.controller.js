@@ -1078,11 +1078,22 @@ function reportrealisasidepart(req, res) {
 
       let getmataanggaran = await model.getmataanggaran(kdmatanggaran);
       let getkelmataanggaran = await model.getkelmataanggaran(kdkelmatanggaran);
+      if (realisasikeldepart[0].nominal === null) {
+        realisasikeldepart = 0 
+      }else{
+        realisasikeldepart = realisasikeldepart[0].nominal
+      }
+
+      if (realisasidepartmata[0].nominal === null) {
+        realisasidepartmata = 0 
+      }else{
+        realisasidepartmata = realisasidepartmata[0].nominal
+      }
 
       data_arrkeldepart.push({
         kode_kelompok_mata_anggaran: getkelmataanggaran[0].kode_kelompok_mata_anggaran,
         nama_kelompok_mata_anggaran: getkelmataanggaran[0].nama_kelompok_mata_anggaran,
-        nominalmatarealisasidepart: realisasikeldepart[0].nominal,
+        nominalmatarealisasidepart: realisasikeldepart,
         nominalmataanggaranfydepart: nominalkelmataanggarandepartfy,
         mataanggaranytddepart: kelmataanggaranytdcse,
         fydepart: kelmtfydepart,
@@ -1093,7 +1104,7 @@ function reportrealisasidepart(req, res) {
       data_arrmatadepart.push({
         kode_mata_anggaran: getmataanggaran[0].kode_mata_anggaran,
         nama_mata_anggaran: getmataanggaran[0].nama_mata_anggaran,
-        nominalmatarealisasidepart: realisasidepartmata[0].nominal,
+        nominalmatarealisasidepart: realisasidepartmata,
         nominalmataanggaranfydepart: nominalmataanggaranfydepart,
         mataanggaranytddepart: mataanggaranytdepart,
         fydepart: mtfydepart,
