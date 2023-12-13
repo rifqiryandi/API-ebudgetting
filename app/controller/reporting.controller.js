@@ -686,10 +686,14 @@ function reportrealisasi(req, res) {
         nominalkelmataanggarancomfy - realisasicommkel[0].nominal;
       // console.log(realisasicsekel);
 
+     
       
       let totalrealisasikelmata = realisasicsekel[0].nominal + realisasidirkel[0].nominal + realisasicommkel[0].nominal;
       let totalanggarankelmata = nominalkelmataanggarancsefy + nominalkelmataanggarandirfy + nominalkelmataanggarancomfy;
       let kelpresentease = ((totalrealisasikelmata / (presentase * totalanggarankelmata)) *100).toFixed(1);
+      let totalkelmtytd = Math.floor(
+        totalanggarankelmata * presentase
+      );
       let totalsisaanggarankelmata = kelsisamtanggarancse + kelsisamtanggarandir + kelsisamtanggarancomm;
 
 
@@ -718,6 +722,7 @@ function reportrealisasi(req, res) {
         sisamtanggarancomm: kelsisamtanggarancomm,
         totalrealisasikelmata:totalrealisasikelmata,
         totalanggarankelmata:totalanggarankelmata,
+        totalkelmtytd:totalkelmtytd,
         kelpresentease:kelpresentease,
         totalsisaanggarankelmata:totalsisaanggarankelmata
       });
@@ -725,6 +730,9 @@ function reportrealisasi(req, res) {
       let totalrealisasimata = realisasicse[0].nominal + realisasidir[0].nominal + realisasicomm[0].nominal;
       let totalanggaranmata = nominalmataanggarancsefy + nominalmataanggarandirfy + nominalmataanggarancomfy;
       let presentasemata = ((totalrealisasimata / (presentase * totalanggaranmata)) *100).toFixed(1);
+      let totalmataytd = Math.floor(
+        totalanggaranmata * presentase
+      );
       let totalsisaanggaranmata = sisamtanggarancse + sisamtanggarandir + sisamtanggarancomm;
 
       data_arrmataanggaran.push({
@@ -750,6 +758,7 @@ function reportrealisasi(req, res) {
         sisamtanggarancomm: sisamtanggarancomm,
         totalrealisasimata:totalrealisasimata,
         totalanggaranmata:totalanggaranmata,
+        totalmataytd:totalmataytd,
         presentasemata:presentasemata,
         totalsisaanggaranmata:totalsisaanggaranmata,
       });
