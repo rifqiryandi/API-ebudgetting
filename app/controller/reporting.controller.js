@@ -865,7 +865,13 @@ function reportrealisasidepart(req, res) {
       var data_arrmatadepart = [];
       var data_arrkeldepart = [];
       let getpresentaseanggaran = await model.getpresentaseanggaran();
-      let presentase = getpresentaseanggaran[0].presentasi / 100;
+      let presen;
+      if (getpresentaseanggaran[0].presentasi === null) {
+        presen = 0;
+      } else{
+        presen = getpresentaseanggaran[0].presentasi;
+      }
+      let presentase = presen / 100;
       
       for (let i = 0; i < result.length; i++) {
         let kode_sub_mata_anggaran = result[i].kode_sub_mata_anggaran;
