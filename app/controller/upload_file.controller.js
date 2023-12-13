@@ -22,11 +22,11 @@ exports.upload_file = (req, res) => {
     rubrik + "-" + kdsubmatanggaran + "-" + nominal + "-" + jnspengajuan;
   let query = model.inslampiran(idpengajuan, namafile, namafolder);
   query
-    .then((result) => {
+    .then(async(result) => {
       // console.log(result);
       if (result >= 1) {
         const path = "uploads/" + namafolder + "/" + file.name;
-        file.mv(path, (err) => {
+        await file.mv(path, (err) => {
           if (err) {
             return res.status(500).send(err);
           }
@@ -70,11 +70,11 @@ exports.upload_file_realisasi = (req, res) => {
     namafile
   );
   query
-    .then((result) => {
+    .then(async(result) => {
       // console.log(result);
       if (result >= 1) {
         const path = "uploads/realisasi/" + namafolder + "/" + file.name;
-        file.mv(path, (err) => {
+        await file.mv(path, (err) => {
           if (err) {
             return res.status(500).send(err);
           }
