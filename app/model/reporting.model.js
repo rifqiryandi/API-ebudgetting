@@ -18,6 +18,8 @@ let reportrealisasi = (kdmatanggaran) => {
 };
 
 let getsumtopupanggaran = (kode_sub_mata_anggaran, entitas1) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -29,6 +31,7 @@ let getsumtopupanggaran = (kode_sub_mata_anggaran, entitas1) => {
           "b.kode_departemen",
           "c.kode_departement"
         )
+        .where("b.tahun", year)
         .where("a.status", 2)
         .where("b.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
         .where("c.kode_entitas", entitas1);
@@ -44,6 +47,8 @@ let getsumtopupanggaran = (kode_sub_mata_anggaran, entitas1) => {
 };
 
 let getsumswitchanggarankurang = (kode_sub_mata_anggaran, entitas1) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -55,6 +60,7 @@ let getsumswitchanggarankurang = (kode_sub_mata_anggaran, entitas1) => {
           "b.kode_departemen",
           "c.kode_departement"
         )
+        .where("b.tahun", year)
         .where("a.status_anggaran", 2)
         .where("b.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
         .where("c.kode_entitas", entitas1);
@@ -69,6 +75,8 @@ let getsumswitchanggarankurang = (kode_sub_mata_anggaran, entitas1) => {
 };
 
 let getsumswitchanggarantambah = (kode_sub_mata_anggaran, entitas1) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -80,6 +88,7 @@ let getsumswitchanggarantambah = (kode_sub_mata_anggaran, entitas1) => {
           "b.kode_departemen",
           "c.kode_departement"
         )
+        .where("b.tahun", year)
         .where("a.status_anggaran", 2)
         .where("b.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
         .where("c.kode_entitas", entitas1);
@@ -94,6 +103,8 @@ let getsumswitchanggarantambah = (kode_sub_mata_anggaran, entitas1) => {
 };
 
 let getanggaranfy = (kode_sub_mata_anggaran, entitas1) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -104,7 +115,7 @@ let getanggaranfy = (kode_sub_mata_anggaran, entitas1) => {
           "a.kode_departemen",
           "b.kode_departement"
         )
-        .where("a.tahun", 2023)
+        .where("a.tahun", year)
         .where("a.status_anggaran", 2)
         .where("a.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
         .where("b.kode_entitas", entitas1);
@@ -119,6 +130,8 @@ let getanggaranfy = (kode_sub_mata_anggaran, entitas1) => {
 };
 
 let getrealisasi = (kode_sub_mata_anggaran, entitas1) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -131,6 +144,7 @@ let getrealisasi = (kode_sub_mata_anggaran, entitas1) => {
           "c.kode_departemen",
           "b.kode_departement"
         )
+        .where("c.tahun", year)
         .where("a.status_pengajuan", 2)
         .where("c.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
         .where("b.kode_entitas", entitas1);
@@ -148,12 +162,14 @@ let getpresentaseanggaran = () => {
   var today = new Date();
   let month = today.getMonth() + 2;
   let bulan = month;
+  let year = today.getFullYear();
 
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
         .sum("a.presentasi as presentasi")
         .from("m_presentasi_anggaran as a")
+        .where("a.tahun", year)
 
         .where("a. bulan", "<", bulan);
 
@@ -289,6 +305,8 @@ let getdepartmen = (kode_entitas) => {
 };
 
 let totalrealisasi = (opexs) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -302,6 +320,7 @@ let totalrealisasi = (opexs) => {
           "ca.kode_sub_mata_anggaran"
         )
         .where("ca.opex", opexs)
+        .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
         .where("a.status_pengajuan", 2);
       // console.log(data);
       resolve(data);
@@ -313,6 +332,8 @@ let totalrealisasi = (opexs) => {
 };
 
 let totalanggaran = (opexs) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -325,6 +346,7 @@ let totalanggaran = (opexs) => {
           "a.kode_sub_mata_anggaran"
         )
         .where("c.opex", opexs)
+        .where("a.tahun", year)
         .where("a.status_anggaran", 2);
       // console.log(data);
       resolve(data);
@@ -349,6 +371,8 @@ let bulan = () => {
 };
 
 let getsponsorship = (kode, u) => {
+  var d = new Date();
+  let year = d.getFullYear();
   // let monthVariable = bulan;
   return new Promise(async function (resolve) {
     try {
@@ -392,7 +416,8 @@ let getsponsorship = (kode, u) => {
         .where("a.status_pengajuan", 2)
         .where("a.status_validasi", 1)
         .where("c.kode_sub_mata_anggaran", kode)
-        .andWhereRaw(`MONTH(validasi_date) = ?`, u);
+        .andWhereRaw(`MONTH(validasi_date) = ?`, u)
+        .andWhereRaw(`YEAR(validasi_date) = ?`, year);
       // .orderBy("a.nominal", "desc")
       // .limit(10);
 
@@ -406,6 +431,8 @@ let getsponsorship = (kode, u) => {
   });
 };
 let getotalmataanggaran = (entitas1, kdmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -424,6 +451,7 @@ let getotalmataanggaran = (entitas1, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_pengajuan", 2)
+        .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
         .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("b.kode_entitas", entitas1);
       // console.log(data);
@@ -436,6 +464,8 @@ let getotalmataanggaran = (entitas1, kdmatanggaran) => {
 };
 
 let getmataanggaranfy = (entitas1, kdmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -452,6 +482,7 @@ let getmataanggaranfy = (entitas1, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
+        .where("a.tahun", year)
         .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("b.kode_entitas", entitas1);
 
@@ -465,6 +496,8 @@ let getmataanggaranfy = (entitas1, kdmatanggaran) => {
 };
 
 let getsumtopupmataanggaran = (entitas1, kdmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -482,6 +515,7 @@ let getsumtopupmataanggaran = (entitas1, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status", 2)
+        .where("b.tahun", year)
         .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("c.kode_entitas", entitas1);
       // .groupBy("a.id_anggaran");
@@ -496,6 +530,8 @@ let getsumtopupmataanggaran = (entitas1, kdmatanggaran) => {
 };
 
 let getsumswitchmatanggarankurang = (entitas1, kdmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -513,6 +549,7 @@ let getsumswitchmatanggarankurang = (entitas1, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
+        .where("b.tahun", year)
         .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("c.kode_entitas", entitas1);
 
@@ -526,6 +563,8 @@ let getsumswitchmatanggarankurang = (entitas1, kdmatanggaran) => {
 };
 
 let getsumswitchmatanggarantambah = (entitas1, kdmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -543,6 +582,7 @@ let getsumswitchmatanggarantambah = (entitas1, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
+        .where("b.tahun", year)
         .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("c.kode_entitas", entitas1);
 
@@ -566,51 +606,51 @@ let getkodesubsponsorship = () => {
               "(SELECT ifnull(sum( a.nominal ),0)FROM h_realisasi a " +
               "LEFT JOIN h_pengajuan b ON a.id_pengajuan = b.id " +
               "LEFT JOIN m_anggaran c ON b.id_anggaran = c.id  " +
-              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) = '1') AS januari, " +
+              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) = '1' and YEAR(a.validasi_date) = YEAR(now())) AS januari, " +
               "(SELECT ifnull(sum( a.nominal ),0)FROM h_realisasi a " +
               "LEFT JOIN h_pengajuan b ON a.id_pengajuan = b.id " +
               "LEFT JOIN m_anggaran c ON b.id_anggaran = c.id  " +
-              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '2') AS febuari, " +
+              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '2' and YEAR(a.validasi_date) = YEAR(now())) AS febuari, " +
               "(SELECT ifnull(sum( a.nominal ),0)FROM h_realisasi a " +
               "LEFT JOIN h_pengajuan b ON a.id_pengajuan = b.id " +
               "LEFT JOIN m_anggaran c ON b.id_anggaran = c.id  " +
-              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '3') AS maret, " +
+              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '3' and YEAR(a.validasi_date) = YEAR(now())) AS maret, " +
               "(SELECT ifnull(sum( a.nominal ),0)FROM h_realisasi a " +
               "LEFT JOIN h_pengajuan b ON a.id_pengajuan = b.id " +
               "LEFT JOIN m_anggaran c ON b.id_anggaran = c.id  " +
-              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '4') AS april, " +
+              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '4' and YEAR(a.validasi_date) = YEAR(now())) AS april, " +
               "(SELECT ifnull(sum( a.nominal ),0)FROM h_realisasi a " +
               "LEFT JOIN h_pengajuan b ON a.id_pengajuan = b.id " +
               "LEFT JOIN m_anggaran c ON b.id_anggaran = c.id  " +
-              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '5') AS mei, " +
+              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '5' and YEAR(a.validasi_date) = YEAR(now())) AS mei, " +
               "(SELECT ifnull(sum( a.nominal ),0)FROM h_realisasi a " +
               "LEFT JOIN h_pengajuan b ON a.id_pengajuan = b.id " +
               "LEFT JOIN m_anggaran c ON b.id_anggaran = c.id  " +
-              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '6') AS juni, " +
+              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '6' and YEAR(a.validasi_date) = YEAR(now())) AS juni, " +
               "(SELECT ifnull(sum( a.nominal ),0)FROM h_realisasi a " +
               "LEFT JOIN h_pengajuan b ON a.id_pengajuan = b.id " +
               "LEFT JOIN m_anggaran c ON b.id_anggaran = c.id  " +
-              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) = '7') AS juli, " +
+              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) = '7' and YEAR(a.validasi_date) = YEAR(now())) AS juli, " +
               "(SELECT ifnull(sum( a.nominal ),0)FROM h_realisasi a " +
               "LEFT JOIN h_pengajuan b ON a.id_pengajuan = b.id " +
               "LEFT JOIN m_anggaran c ON b.id_anggaran = c.id  " +
-              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '8') AS agutus, " +
+              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '8' and YEAR(a.validasi_date) = YEAR(now())) AS agutus, " +
               "(SELECT ifnull(sum( a.nominal ),0)FROM h_realisasi a " +
               "LEFT JOIN h_pengajuan b ON a.id_pengajuan = b.id " +
               "LEFT JOIN m_anggaran c ON b.id_anggaran = c.id  " +
-              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '9') AS september, " +
+              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '9' and YEAR(a.validasi_date) = YEAR(now())) AS september, " +
               "(SELECT ifnull(sum( a.nominal ),0)FROM h_realisasi a " +
               "LEFT JOIN h_pengajuan b ON a.id_pengajuan = b.id " +
               "LEFT JOIN m_anggaran c ON b.id_anggaran = c.id  " +
-              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '10') AS oktober, " +
+              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '10' and YEAR(a.validasi_date) = YEAR(now())) AS oktober, " +
               "(SELECT ifnull(sum( a.nominal ),0)FROM h_realisasi a " +
               "LEFT JOIN h_pengajuan b ON a.id_pengajuan = b.id " +
               "LEFT JOIN m_anggaran c ON b.id_anggaran = c.id  " +
-              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '11') AS november, " +
+              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '11' and YEAR(a.validasi_date) = YEAR(now())) AS november, " +
               "(SELECT ifnull(sum( a.nominal ),0)FROM h_realisasi a " +
               "LEFT JOIN h_pengajuan b ON a.id_pengajuan = b.id " +
               "LEFT JOIN m_anggaran c ON b.id_anggaran = c.id  " +
-              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '12') AS desember "
+              "WHERE c.kode_sub_mata_anggaran = ai.kode_sub_mata_anggaran and MONTH(a.validasi_date) <= '12' and YEAR(a.validasi_date) = YEAR(now())) AS desember "
           )
         )
         .whereIn(
@@ -663,6 +703,8 @@ let getkelmataanggaran = (kdkelmatanggaran) => {
 };
 
 let getotalkelmataanggaran = (entitas1, kdkelmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -681,6 +723,7 @@ let getotalkelmataanggaran = (entitas1, kdkelmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_pengajuan", 2)
+        .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
         .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("b.kode_entitas", entitas1);
       // console.log(data);
@@ -693,6 +736,8 @@ let getotalkelmataanggaran = (entitas1, kdkelmatanggaran) => {
 };
 
 let getkelmataanggaranfy = (entitas1, kdkelmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -709,6 +754,7 @@ let getkelmataanggaranfy = (entitas1, kdkelmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
+        .where("a.tahun", year)
         .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("b.kode_entitas", entitas1);
 
@@ -722,6 +768,8 @@ let getkelmataanggaranfy = (entitas1, kdkelmatanggaran) => {
 };
 
 let getsumtopupkelmataanggaran = (entitas1, kdkelmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -739,6 +787,7 @@ let getsumtopupkelmataanggaran = (entitas1, kdkelmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status", 2)
+        .where("b.tahun", year)
         .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("c.kode_entitas", entitas1);
       // .groupBy("a.id_anggaran");
@@ -753,6 +802,8 @@ let getsumtopupkelmataanggaran = (entitas1, kdkelmatanggaran) => {
 };
 
 let getsumswitchkelmatanggarankurang = (entitas1, kdkelmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -770,6 +821,7 @@ let getsumswitchkelmatanggarankurang = (entitas1, kdkelmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
+        .where("b.tahun", year)
         .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("c.kode_entitas", entitas1);
 
@@ -783,6 +835,8 @@ let getsumswitchkelmatanggarankurang = (entitas1, kdkelmatanggaran) => {
 };
 
 let getsumswitchkelmatanggarantambah = (entitas1, kdkelmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -800,6 +854,7 @@ let getsumswitchkelmatanggarantambah = (entitas1, kdkelmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
+        .where("b.tahun", year)
         .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("c.kode_entitas", entitas1);
 
@@ -813,6 +868,8 @@ let getsumswitchkelmatanggarantambah = (entitas1, kdkelmatanggaran) => {
 };
 
 let getanggaranfydepart = (kode_sub_mata_anggaran, kddepartemen) => {
+  var d = new Date(),
+  year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -823,7 +880,7 @@ let getanggaranfydepart = (kode_sub_mata_anggaran, kddepartemen) => {
           "a.kode_departemen",
           "b.kode_departement"
         )
-        .where("a.tahun", 2023)
+        .where("a.tahun", year)
         .where("a.status_anggaran", 2)
         .where("a.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
         .where("b.kode_departement", kddepartemen);
@@ -838,6 +895,8 @@ let getanggaranfydepart = (kode_sub_mata_anggaran, kddepartemen) => {
 };
 
 let getsumtopupanggarandepart = (kode_sub_mata_anggaran, kddepartemen) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -850,6 +909,7 @@ let getsumtopupanggarandepart = (kode_sub_mata_anggaran, kddepartemen) => {
           "c.kode_departement"
         )
         .where("a.status", 2)
+        .where("b.tahun", year)
         .where("b.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
         .where("c.kode_departement", kddepartemen);
       // .groupBy("a.id_anggaran");
@@ -864,6 +924,8 @@ let getsumtopupanggarandepart = (kode_sub_mata_anggaran, kddepartemen) => {
 };
 
 let anggaranswitchcsemindepart = (kode_sub_mata_anggaran, kddepartemen) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -876,6 +938,7 @@ let anggaranswitchcsemindepart = (kode_sub_mata_anggaran, kddepartemen) => {
           "c.kode_departement"
         )
         .where("a.status_anggaran", 2)
+        .where("b.tahun", year)
         .where("b.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
         .where("c.kode_departement", kddepartemen);
 
@@ -889,6 +952,8 @@ let anggaranswitchcsemindepart = (kode_sub_mata_anggaran, kddepartemen) => {
 };
 
 let anggaranswitchcseplusdepart = (kode_sub_mata_anggaran, kddepartemen) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -901,6 +966,7 @@ let anggaranswitchcseplusdepart = (kode_sub_mata_anggaran, kddepartemen) => {
           "c.kode_departement"
         )
         .where("a.status_anggaran", 2)
+        .where("b.tahun", year)
         .where("b.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
         .where("c.kode_departement", kddepartemen);
 
@@ -914,6 +980,8 @@ let anggaranswitchcseplusdepart = (kode_sub_mata_anggaran, kddepartemen) => {
 };
 
 let realisasidepart = (kode_sub_mata_anggaran, kddepartemen) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -927,6 +995,7 @@ let realisasidepart = (kode_sub_mata_anggaran, kddepartemen) => {
           "b.kode_departement"
         )
         .where("a.status_pengajuan", 2)
+        .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
         .where("c.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
         .where("b.kode_departement", kddepartemen);
 
@@ -940,6 +1009,8 @@ let realisasidepart = (kode_sub_mata_anggaran, kddepartemen) => {
 };
 
 let realisasidepartmata = (kddepartemen, kdmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -958,6 +1029,7 @@ let realisasidepartmata = (kddepartemen, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_pengajuan", 2)
+        .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
         .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("b.kode_departement", kddepartemen);
       // console.log(data);
@@ -970,6 +1042,8 @@ let realisasidepartmata = (kddepartemen, kdmatanggaran) => {
 };
 
 let anggaranfydepartmata = (kddepartemen, kdmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -986,6 +1060,7 @@ let anggaranfydepartmata = (kddepartemen, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
+        .where("a.tahun", year)
         .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("b.kode_departement", kddepartemen);
 
@@ -999,6 +1074,8 @@ let anggaranfydepartmata = (kddepartemen, kdmatanggaran) => {
 };
 
 let getsumtopupmataanggarandepart = (kddepartemen, kdmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -1016,6 +1093,7 @@ let getsumtopupmataanggarandepart = (kddepartemen, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status", 2)
+        .where("b.tahun", year)
         .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("c.kode_departement", kddepartemen);
       // .groupBy("a.id_anggaran");
@@ -1030,6 +1108,8 @@ let getsumtopupmataanggarandepart = (kddepartemen, kdmatanggaran) => {
 };
 
 let getsumswitchmatanggarankurangdepart = (kddepartemen, kdmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -1047,6 +1127,7 @@ let getsumswitchmatanggarankurangdepart = (kddepartemen, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
+        .where("b.tahun", year)
         .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("c.kode_departement", kddepartemen);
 
@@ -1060,6 +1141,8 @@ let getsumswitchmatanggarankurangdepart = (kddepartemen, kdmatanggaran) => {
 };
 
 let getsumswitchmatanggarantambahdepart = (kddepartemen, kdmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -1077,6 +1160,7 @@ let getsumswitchmatanggarantambahdepart = (kddepartemen, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
+        .where("b.tahun", year)
         .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("c.kode_departement", kddepartemen);
 
@@ -1090,6 +1174,8 @@ let getsumswitchmatanggarantambahdepart = (kddepartemen, kdmatanggaran) => {
 };
 
 let getotalkelmataanggarandepart = (kddepartemen, kdkelmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -1108,6 +1194,7 @@ let getotalkelmataanggarandepart = (kddepartemen, kdkelmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_pengajuan", 2)
+        .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
         .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("b.kode_departement", kddepartemen);
       // console.log(data);
@@ -1120,6 +1207,8 @@ let getotalkelmataanggarandepart = (kddepartemen, kdkelmatanggaran) => {
 };
 
 let getkelmataanggaranfydepart = (kddepartemen, kdkelmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -1136,6 +1225,7 @@ let getkelmataanggaranfydepart = (kddepartemen, kdkelmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
+        .where("a.tahun", year)
         .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("b.kode_departement", kddepartemen);
 
@@ -1149,6 +1239,8 @@ let getkelmataanggaranfydepart = (kddepartemen, kdkelmatanggaran) => {
 };
 
 let getsumtopupkelmataanggarandepart = (kddepartemen, kdkelmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -1166,6 +1258,7 @@ let getsumtopupkelmataanggarandepart = (kddepartemen, kdkelmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status", 2)
+        .where("b.tahun", year)
         .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("c.kode_departement", kddepartemen);
       // .groupBy("a.id_anggaran");
@@ -1180,6 +1273,8 @@ let getsumtopupkelmataanggarandepart = (kddepartemen, kdkelmatanggaran) => {
 };
 
 let getsumswitchkelmatanggarankurangdepart = (kddepartemen, kdkelmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -1197,6 +1292,7 @@ let getsumswitchkelmatanggarankurangdepart = (kddepartemen, kdkelmatanggaran) =>
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
+        .where("b.tahun", year)
         .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("c.kode_departement", kddepartemen);
 
@@ -1210,6 +1306,8 @@ let getsumswitchkelmatanggarankurangdepart = (kddepartemen, kdkelmatanggaran) =>
 };
 
 let getsumswitchkelmatanggarantambahdepart = (kddepartemen, kdkelmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
@@ -1227,6 +1325,7 @@ let getsumswitchkelmatanggarantambahdepart = (kddepartemen, kdkelmatanggaran) =>
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_anggaran", 2)
+        .where("b.tahun", year)
         .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("c.kode_departement", kddepartemen);
 
@@ -1239,6 +1338,189 @@ let getsumswitchkelmatanggarantambahdepart = (kddepartemen, kdkelmatanggaran) =>
   });
 };
 
+let getkodesubsponsorshiplist = () => {
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .select("a.kode_sub_mata_anggaran", "a.nama_sub_mata_anggaran")
+        .from("r_sub_mata_anggaran as a")
+        .whereIn(
+          "a.kode_sub_mata_anggaran",
+          [550009, 550017, 550401, 550506, 550507]
+        );
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      // console.log(error);
+      resolve(false);
+    }
+  });
+};
+
+let realisasisponsor = (opex, kode_sub_mata_anggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.nominal as nominal")
+        .from("h_realisasi as a")
+        .leftJoin("h_pengajuan as d", "a.id_pengajuan", "d.id")
+        .leftJoin("m_anggaran as c", "d.id_anggaran", "c.id")
+        .leftJoin(
+          "r_departemen as b",
+          "c.kode_departemen",
+          "b.kode_departement"
+        )
+        .leftJoin(
+          "r_sub_mata_anggaran as e",
+          "c.kode_sub_mata_anggaran",
+          "e.kode_sub_mata_anggaran"
+        )
+        .where("a.status_pengajuan", 2)
+        .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
+        .where("e.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
+        .where("e.opex", opex);
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      // console.log(error);
+      resolve(false);
+    }
+  });
+};
+
+let anggaranfysponsor = (opex, kode_sub_mata_anggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.nominal as nominal")
+        .from("m_anggaran as a")
+        .leftJoin(
+          "r_departemen as b",
+          "a.kode_departemen",
+          "b.kode_departement"
+        )
+        .leftJoin(
+          "r_sub_mata_anggaran as e",
+          "a.kode_sub_mata_anggaran",
+          "e.kode_sub_mata_anggaran"
+        )
+        .where("a.status_anggaran", 2)
+        .where("a.tahun", year)
+        .where("e.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
+        .where("e.opex", opex);
+
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      console.log(error);
+      // resolve(false);
+    }
+  });
+};
+
+let getsumtopupanggaransponsor = (opex, kode_sub_mata_anggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.nominal_topup as nominaltopup")
+        .from("h_topup_anggaran as a")
+        .leftJoin("m_anggaran as b", "a.id_anggaran", "b.id")
+        .leftJoin(
+          "r_departemen as c",
+          "b.kode_departemen",
+          "c.kode_departement"
+        )
+        .leftJoin(
+          "r_sub_mata_anggaran as e",
+          "b.kode_sub_mata_anggaran",
+          "e.kode_sub_mata_anggaran"
+        )
+        .where("a.status", 2)
+        .where("b.tahun", year)
+        .where("e.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
+        .where("e.opex", opex);
+      // .groupBy("a.id_anggaran");
+
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      // console.log(error);
+      resolve(false);
+    }
+  });
+};
+
+let getsumswitchanggarankurangsponsor = (opex, kode_sub_mata_anggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.bsu_inout as bsu_inout")
+        .from("h_m_anggaran as a")
+        .leftJoin("m_anggaran as b", "a.id_anggaran_awal", "b.id")
+        .leftJoin(
+          "r_departemen as c",
+          "b.kode_departemen",
+          "c.kode_departement"
+        )
+        .leftJoin(
+          "r_sub_mata_anggaran as e",
+          "b.kode_sub_mata_anggaran",
+          "e.kode_sub_mata_anggaran"
+        )
+        .where("a.status_anggaran", 2)
+        .where("b.tahun", year)
+        .where("e.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
+        .where("e.opex", opex);
+
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      // console.log(error);
+      resolve(false);
+    }
+  });
+};
+
+let getsumswitchanggarantambahsponsor = (opex, kode_sub_mata_anggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.bsu_inout as bsu_inout")
+        .from("h_m_anggaran as a")
+        .leftJoin("m_anggaran as b", "a.id_anggaran_final", "b.id")
+        .leftJoin(
+          "r_departemen as c",
+          "b.kode_departemen",
+          "c.kode_departement"
+        )
+        .leftJoin(
+          "r_sub_mata_anggaran as e",
+          "b.kode_sub_mata_anggaran",
+          "e.kode_sub_mata_anggaran"
+        )
+        .where("a.status_anggaran", 2)
+        .where("b.tahun", year)
+        .where("e.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
+        .where("e.opex", opex);
+
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      // console.log(error);
+      resolve(false);
+    }
+  });
+};
 
 module.exports = {
   reportrealisasi,
@@ -1284,5 +1566,12 @@ module.exports = {
   getkelmataanggaranfydepart,
   getsumtopupkelmataanggarandepart,
   getsumswitchkelmatanggarankurangdepart,
-  getsumswitchkelmatanggarantambahdepart
+  getsumswitchkelmatanggarantambahdepart,
+  getkodesubsponsorshiplist,
+  realisasisponsor,
+  anggaranfysponsor,
+  getsumtopupanggaransponsor,
+  getsumswitchanggarankurangsponsor,
+  getsumswitchanggarantambahsponsor
+  
 };

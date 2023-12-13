@@ -59,6 +59,12 @@ module.exports = function (app) {
   );
 
   app.post(
+    "/reporting/sponsorshiplist",
+    [authJwt.verifyToken],
+    controller.sponsorshiplist
+  );
+
+  app.post(
     "/reporting/tesarray",
     [authJwt.verifyToken],
     controller.tesarray

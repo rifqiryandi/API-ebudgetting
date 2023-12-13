@@ -1221,6 +1221,105 @@ function sponsorship(req, res) {
     });
 }
 
+function sponsorshiplist(req, res) {
+  let opex = req.body.opex;
+  let query = model.getkodesubsponsorshiplist();
+  query
+    .then(async (result) => {
+      var data_arr=[];
+      for (let i = 0; i < result.length; i++) {
+        // console.log(result);
+        let kode_sub_mata_anggaran = result[i].kode_sub_mata_anggaran;
+
+        let realisasisponsor = await model.realisasisponsor(
+          opex,
+          kode_sub_mata_anggaran
+        );
+
+        let anggaranfysponsor = await model.anggaranfysponsor(
+          opex,
+          kode_sub_mata_anggaran
+        );
+
+        let getsumtopupanggaransponsor = await model.getsumtopupanggaransponsor(
+          opex,
+          kode_sub_mata_anggaran
+        );
+
+        let getsumswitchanggarankurangsponsor = await model.getsumswitchanggarankurangsponsor(
+          opex,
+          kode_sub_mata_anggaran
+        );
+
+        let getsumswitchanggarantambahsponsor = await model.getsumswitchanggarantambahsponsor(
+          opex,
+          kode_sub_mata_anggaran
+        );
+        let nominalanggaranfysponsor;
+
+        let nominalrealisaisponsor;
+        if (realisasisponsor[0].nominal === null) {
+          nominalrealisaisponsor = 0;
+        } else {
+          nominalrealisaisponsor = realisasisponsor[0].nominal;
+         
+        }
+
+        if (anggaranfysponsor[0].nominal === null) {
+          nominalanggaranfysponsor = 0;
+       } else {
+          nominalanggaranfysponsor =
+         anggaranfysponsor[0].nominal +
+         getsumtopupanggaransponsor[0].nominaltopup -
+         getsumswitchanggarankurangsponsor[0].bsu_inout +
+         getsumswitchanggarantambahsponsor[0].bsu_inout;
+       }
+
+        let fysponsor = (
+          (realisasisponsor[0].nominal / nominalanggaranfysponsor) *
+          100
+        ).toFixed(1);
+
+        if (isNaN(fysponsor) == 0) {
+          fysponsor = fysponsor;
+        } else {
+          fysponsor = 0.0;
+        }
+
+        let sisaanggaransponsor = nominalanggaranfysponsor - realisasisponsor[0].nominal;
+
+        data_arr.push({
+          kode_mata_anggaran: result[i].kode_sub_mata_anggaran,
+          nama_mata_anggaran: result[i].nama_sub_mata_anggaran,
+          nominalrealisasisponsor: nominalrealisaisponsor,
+          nominalanggaranfysponsor: nominalanggaranfysponsor,
+          fydepart: fysponsor,
+          sisaanggarancse: sisaanggaransponsor,
+        });
+        // console.log(realisasisponsor);  
+      }
+      if (result) {
+        res.status(200).json({
+          responCode: 200,
+          Msg: "Data Tersedia",
+          data: data_arr,
+        });
+      } else {
+        res.status(400).json({
+          responCode: 400,
+          Msg: "Data Tidak Tersedia",
+        });
+      }
+    })
+    .catch(function (error) {
+      res.status(500).json({
+        responCode: 500,
+        Msg: "Eror Database",
+      });
+      console.log(error);
+    });
+}
+
 async function reportrealisasideparttes(kdmatanggaran, kddepartemen) {
   // console.log(kdmatanggaran,kddepartemen);
   var data_arr = [];
@@ -1320,5 +1419,6 @@ module.exports = {
   totalrealisasi,
   totalanggaran,
   sponsorship,
-  tesarray
+  tesarray,
+  sponsorshiplist
 };

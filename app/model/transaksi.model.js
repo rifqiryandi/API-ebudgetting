@@ -640,7 +640,7 @@ let validasikegiatan = (id_kegiatan, status) => {
   });
 };
 
-let inskegiatan = (id_anggaran, kegiatan, nominal, userid, bulan) => {
+let inskegiatan = (id_anggaran, kegiatan, nominal, userid, bulan,opex,keterangan) => {
   var today = new Date();
   var dateNow = new Date().toISOString().slice(0, 10);
   var time =
@@ -659,6 +659,8 @@ let inskegiatan = (id_anggaran, kegiatan, nominal, userid, bulan) => {
             update_date: null,
             bulan_kegiatan: bulan,
             status: 0,
+            opex: opex,
+            keterangan: keterangan,
           },
         ])
         .into("h_kegiatan");

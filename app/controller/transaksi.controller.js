@@ -313,7 +313,9 @@ function inskegiatan(req, res) {
   let nominal = req.body.nominal;
   let userid = req.body.userid;
   let bulan = req.body.bulan;
-  let query = model.inskegiatan(id_anggaran, kegiatan, nominal, userid, bulan);
+  let opex = req.body.opex;
+  let keterangan = req.body.keterangan;
+  let query = model.inskegiatan(id_anggaran, kegiatan, nominal, userid, bulan,opex,keterangan);
   query
     .then((result) => {
       // console.log(result.length);
