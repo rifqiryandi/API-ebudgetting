@@ -676,7 +676,7 @@ function reportrealisasi(req, res) {
       
       let totalrealisasikelmata = realisasicsekel[0].nominal + realisasidirkel[0].nominal + realisasicommkel[0].nominal;
       let totalanggarankelmata = nominalkelmataanggarancsefy + nominalkelmataanggarandirfy + nominalkelmataanggarancomfy;
-      let kelpresentease = kelmtfycse;
+      let kelpresentease = ((totalrealisasikelmata / (presentase * totalanggarankelmata)) *100).toFixed(1);
       let totalsisaanggarankelmata = kelsisamtanggarancse + kelsisamtanggarandir + kelsisamtanggarancomm;
 
 
@@ -711,7 +711,7 @@ function reportrealisasi(req, res) {
       // console.log(data_arrkelmataanggaran);
       let totalrealisasimata = realisasicse[0].nominal + realisasidir[0].nominal + realisasicomm[0].nominal;
       let totalanggaranmata = nominalmataanggarancsefy + nominalmataanggarandirfy + nominalmataanggarancomfy;
-      let presentasemata = mtfycse;
+      let presentasemata = ((totalrealisasimata / (presentase * totalanggaranmata)) *100).toFixed(1);
       let totalsisaanggaranmata = sisamtanggarancse + sisamtanggarandir + sisamtanggarancomm;
 
       data_arrmataanggaran.push({
