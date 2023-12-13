@@ -1070,9 +1070,12 @@ function reportrealisasidepart(req, res) {
 
           if (isNaN(kelmtytdepart) == 0) {
             kelmtytdepart = kelmtytdepart;
+          }else if (kelmtytdepart == Number.POSITIVE_INFINITY || kelmtytdepart == Number.NEGATIVE_INFINITY){
+            kelmtytdepart = 0;
           } else {
             kelmtytdepart = 0;
           }
+          
 
           let kelsisamtanggarancse =
           nominalkelmataanggarandepartfy - realisasikeldepart[0].nominal;
