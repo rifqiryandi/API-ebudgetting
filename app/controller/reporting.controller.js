@@ -1069,11 +1069,11 @@ function reportrealisasidepart(req, res) {
           ).toFixed(1);
 
           if (isNaN(kelmtytdepart) == 0) {
-            kelmtytdepart = kelmtytdepart;
+            kelmtytdepart = 0;
           }else if (isFinite(kelmtytdepart)){
             kelmtytdepart = 0;
           } else {
-            kelmtytdepart = 0;
+            kelmtytdepart = kelmtytdepart;
           }
           
 
