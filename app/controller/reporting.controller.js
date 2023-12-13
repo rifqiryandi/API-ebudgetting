@@ -927,9 +927,11 @@ function reportrealisasidepart(req, res) {
 
         if (isNaN(ytddepart) == 0) {
           ytddepart = ytddepart;
+        } else if (ytddepart == Number.POSITIVE_INFINITY || ytddepart == Number.NEGATIVE_INFINITY){
+          ytddepart = 0;
         } else {
           ytddepart = 0;
-        }  
+        }
 
         data_arrdepart.push({
           kode_sub_mata_anggaran: result[i].kode_sub_mata_anggaran,
