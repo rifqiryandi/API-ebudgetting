@@ -854,13 +854,19 @@ function countnotifikasi(req, res) {
 }
 
 function reportrealisasidepart(req, res) {
-  let kdmatanggaran = req.body.kdmatanggaran; 
+  let kdmatanggaran = req.body.kdmatanggaran;
+  let kdkelmatanggaran = req.body.kdkelmatanggaran;
   let kddepartemen = req.body.kddepartemen; 
   let query = model.reportrealisasi(kdmatanggaran);
   query
     .then(async (result) => {
       // console.log(result)
-      var data_arr = [];
+      var data_arrdepart = [];
+      var data_arrmatadepart = [];
+      var data_arrkeldepart = [];
+      let getpresentaseanggaran = await model.getpresentaseanggaran();
+      let presentase = getpresentaseanggaran[0].presentasi / 100;
+      
       for (let i = 0; i < result.length; i++) {
         let kode_sub_mata_anggaran = result[i].kode_sub_mata_anggaran;
         let anggaranfy = await model.getanggaranfydepart(
@@ -887,7 +893,7 @@ function reportrealisasidepart(req, res) {
         if (realisasidepart[0].nominal === null) {
           realisasidepart = 0;
         } else {
-          realisasidepart = realisasicse[0].nominal;
+          realisasidepart = realisasidepart[0].nominal;
         }
         
         if (anggaranfy[0].nominal === null) {
@@ -899,10 +905,8 @@ function reportrealisasidepart(req, res) {
           anggaranswitchcsemindepart[0].bsu_inout +
           anggaranswitchcseplusdepart[0].bsu_inout;
         }
-        let getpresentaseanggaran = await model.getpresentaseanggaran();
-        let presentase = getpresentaseanggaran[0].presentasi / 100;
+       
         let anggaranytddepart = Math.floor(anggaranfy * presentase);
-
         let sisaanggarandepart = anggaranfy - realisasidepart;
 
         let fydepart = (
@@ -925,9 +929,9 @@ function reportrealisasidepart(req, res) {
           ytddepart = ytddepart;
         } else {
           ytddepart = 0;
-        }
+        }  
 
-        data_arr.push({
+        data_arrdepart.push({
           kode_sub_mata_anggaran: result[i].kode_sub_mata_anggaran,
           nama_sub_mata_anggaran: result[i].nama_sub_mata_anggaran,
           nominalrealisasidepart: realisasidepart,
@@ -939,11 +943,174 @@ function reportrealisasidepart(req, res) {
         });
         // console.log(ytddepart)
       }
+      let realisasidepartmata = await model.realisasidepartmata(
+        kddepartemen,
+        kdmatanggaran
+      );
+
+      let anggaranfydepartmata = await model.anggaranfydepartmata(
+        kddepartemen,
+        kdmatanggaran
+      );
+
+      let nominalmataanggaranfydepart;
+
+      let mataanggarantopupdepart = await model.getsumtopupmataanggarandepart(
+        kddepartemen,
+        kdmatanggaran
+      );
+
+      let mataanggaranswitchmindepart = await model.getsumswitchmatanggarankurangdepart(
+        kddepartemen,
+        kdmatanggaran
+      );
+
+      let mataanggaranswitchplusdepart = await model.getsumswitchmatanggarantambahdepart(
+        kddepartemen,
+        kdmatanggaran
+      );
+
+      if (anggaranfydepartmata[0].nominal === null) {
+        nominalmataanggaranfydepart = 0;
+      } else {
+        nominalmataanggaranfydepart =
+        anggaranfydepartmata[0].nominal +
+        mataanggarantopupdepart[0].nominaltopup -
+        mataanggaranswitchmindepart[0].bsu_inout +
+        mataanggaranswitchplusdepart[0].bsu_inout;
+      }
+
+      let mataanggaranytdepart = Math.floor(nominalmataanggaranfydepart * presentase);
+
+      let mtfydepart = (
+        (realisasidepartmata[0].nominal / nominalmataanggaranfydepart) *
+        100
+      ).toFixed(1);
+
+      if (isNaN(mtfydepart) == 0) {
+        mtfydepart = mtfydepart;
+      } else {
+        mtfydepart = 0.0;
+      }
+
+      let mtytdepart = (
+        (realisasidepartmata[0].nominal / (presentase * nominalmataanggaranfydepart)) *
+        100
+      ).toFixed(1);
+
+      if (isNaN(mtytdepart) == 0) {
+        mtytdepart = mtytdepart;
+      } else {
+        mtytdepart = 0.0;
+      }
+
+      let sisamtanggarandepart = nominalmataanggaranfydepart - realisasidepartmata[0].nominal;
+
+      let realisasikeldepart = await model.getotalkelmataanggarandepart(
+        kddepartemen,
+        kdkelmatanggaran
+      );
+
+      let anggaranfykeldepart = await model.getkelmataanggaranfydepart(
+        kddepartemen,
+        kdkelmatanggaran
+      );
+      
+      let kelmataanggarantopupdepart = await model.getsumtopupkelmataanggarandepart(
+        kddepartemen,
+        kdkelmatanggaran
+      );
+
+      let kelmataanggaranswitchdepartmin =
+        await model.getsumswitchkelmatanggarankurangdepart(
+          kddepartemen,
+          kdkelmatanggaran
+        );
+
+      let kelmataanggaranswitchdepartplus =
+        await model.getsumswitchkelmatanggarantambahdepart(
+          kddepartemen,
+          kdkelmatanggaran
+        );
+
+        let nominalkelmataanggarandepartfy;
+
+        if (anggaranfykeldepart[0].nominal === null) {
+          nominalkelmataanggarandepartfy = 0;
+          } else {
+            nominalkelmataanggarandepartfy =
+            anggaranfykeldepart[0].nominal +
+            kelmataanggarantopupdepart[0].nominaltopup -
+            kelmataanggaranswitchdepartmin[0].bsu_inout +
+            kelmataanggaranswitchdepartplus[0].bsu_inout;
+          }
+      
+          let kelmataanggaranytdcse = Math.floor(
+            nominalkelmataanggarandepartfy * presentase
+          );
+        
+          let kelmtfydepart = (
+            (realisasikeldepart[0].nominal / nominalkelmataanggarandepartfy) *
+            100
+          ).toFixed(1);
+
+          if (isNaN(kelmtfydepart) == 0) {
+            kelmtfydepart = kelmtfydepart;
+          } else {
+            kelmtfydepart = 0;
+          }
+
+          let kelmtytdepart = (
+            (realisasikeldepart[0].nominal /
+              (presentase * nominalkelmataanggarandepartfy)) *
+            100
+          ).toFixed(1);
+
+          if (isNaN(kelmtytdepart) == 0) {
+            kelmtytdepart = kelmtytdepart;
+          } else {
+            kelmtytdepart = 0;
+          }
+
+          let kelsisamtanggarancse =
+          nominalkelmataanggarandepartfy - realisasikeldepart[0].nominal;
+
+
+      let getmataanggaran = await model.getmataanggaran(kdmatanggaran);
+      let getkelmataanggaran = await model.getkelmataanggaran(kdkelmatanggaran);
+
+      data_arrkeldepart.push({
+        kode_kelompok_mata_anggaran: getkelmataanggaran[0].kode_kelompok_mata_anggaran,
+        nama_kelompok_mata_anggaran: getkelmataanggaran[0].nama_kelompok_mata_anggaran,
+        nominalmatarealisasidepart: realisasikeldepart[0].nominal,
+        nominalmataanggaranfydepart: nominalkelmataanggarandepartfy,
+        mataanggaranytddepart: kelmataanggaranytdcse,
+        fydepart: kelmtfydepart,
+        ytddepart: kelmtytdepart,
+        sisaanggarancse: kelsisamtanggarancse,
+      });
+
+      data_arrmatadepart.push({
+        kode_mata_anggaran: getmataanggaran[0].kode_mata_anggaran,
+        nama_mata_anggaran: getmataanggaran[0].nama_mata_anggaran,
+        nominalmatarealisasidepart: realisasidepartmata[0].nominal,
+        nominalmataanggaranfydepart: nominalmataanggaranfydepart,
+        mataanggaranytddepart: mataanggaranytdepart,
+        fydepart: mtfydepart,
+        ytddepart: mtytdepart,
+        sisaanggarancse: sisamtanggarandepart,
+      });
+      const datagabung = data_arrkeldepart.concat(
+        data_arrmatadepart,
+        data_arrdepart
+      );
+
+      // console.log(data_arrmatadepart)
       if (result) {
         res.status(200).json({
           responCode: 200,
           Msg: "Data Tersedia",
-          data: data_arr,
+          data: datagabung,
         });
       } else {
         res.status(400).json({

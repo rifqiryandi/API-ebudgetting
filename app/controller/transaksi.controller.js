@@ -429,7 +429,7 @@ function getidkegiatan(req, res) {
 
       // console.log(data_arr);
       // let sisa =
-      if (result.length > 1) {
+      if (result.length >= 1) {
         res.status(200).json({
           responCode: 200,
           Msg: "Data Tersedia",
@@ -449,6 +449,7 @@ function getidkegiatan(req, res) {
         // 'Msg': (err.response.data.fault.message).trim(),
         Msg: "Error Server",
       });
+      console.log(error)
     });
 }
 
