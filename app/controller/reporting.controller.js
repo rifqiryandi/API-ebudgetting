@@ -690,7 +690,11 @@ function reportrealisasi(req, res) {
       
       let totalrealisasikelmata = realisasicsekel[0].nominal + realisasidirkel[0].nominal + realisasicommkel[0].nominal;
       let totalanggarankelmata = nominalkelmataanggarancsefy + nominalkelmataanggarandirfy + nominalkelmataanggarancomfy;
-      let kelpresentease = ((totalrealisasikelmata / (presentase * totalanggarankelmata)) *100).toFixed(1);
+      let kelpresenteasefy = (
+        (totalrealisasikelmata / totalanggarankelmata) *
+        100
+      ).toFixed(1);
+      let kelpresenteaseytd = ((totalrealisasikelmata / (presentase * totalanggarankelmata)) *100).toFixed(1);
       let totalkelmtytd = Math.floor(
         totalanggarankelmata * presentase
       );
@@ -722,14 +726,19 @@ function reportrealisasi(req, res) {
         sisamtanggarancomm: kelsisamtanggarancomm,
         totalrealisasikelmata:totalrealisasikelmata,
         totalanggarankelmata:totalanggarankelmata,
+        kelpresenteasefy:kelpresenteasefy,
         totalkelmtytd:totalkelmtytd,
-        kelpresentease:kelpresentease,
+        kelpresenteaseytd:kelpresenteaseytd,
         totalsisaanggarankelmata:totalsisaanggarankelmata
       });
       // console.log(data_arrkelmataanggaran);
       let totalrealisasimata = realisasicse[0].nominal + realisasidir[0].nominal + realisasicomm[0].nominal;
       let totalanggaranmata = nominalmataanggarancsefy + nominalmataanggarandirfy + nominalmataanggarancomfy;
-      let presentasemata = ((totalrealisasimata / (presentase * totalanggaranmata)) *100).toFixed(1);
+      let presentasematafy = (
+        (totalrealisasimata / totalanggaranmata) *
+        100
+      ).toFixed(1);
+      let presentasemataytd = ((totalrealisasimata / (presentase * totalanggaranmata)) *100).toFixed(1);
       let totalmataytd = Math.floor(
         totalanggaranmata * presentase
       );
@@ -758,8 +767,9 @@ function reportrealisasi(req, res) {
         sisamtanggarancomm: sisamtanggarancomm,
         totalrealisasimata:totalrealisasimata,
         totalanggaranmata:totalanggaranmata,
+        presentasematafy:presentasematafy,
         totalmataytd:totalmataytd,
-        presentasemata:presentasemata,
+        presentasemataytd:presentasemataytd,
         totalsisaanggaranmata:totalsisaanggaranmata,
       });
       // console.log(data_arrmataanggaran);
