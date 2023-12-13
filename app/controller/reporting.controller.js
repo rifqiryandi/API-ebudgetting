@@ -1070,7 +1070,7 @@ function reportrealisasidepart(req, res) {
 
           if (isNaN(kelmtytdepart) == 0) {
             kelmtytdepart = kelmtytdepart;
-          }else if (kelmtytdepart == Number.POSITIVE_INFINITY || kelmtytdepart == Number.NEGATIVE_INFINITY){
+          }else if (isFinite(kelmtytdepart)){
             kelmtytdepart = 0;
           } else {
             kelmtytdepart = 0;
