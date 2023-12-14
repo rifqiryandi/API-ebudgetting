@@ -379,7 +379,7 @@ let totalanggaran = (opexs) => {
         // .where("c.opex", opexs)
         // .where("a.tahun", year)
         // .where("a.status_anggaran", 2);
-        .sum("a.nominal as nominal")
+        .sum("a.nominal as nominal_anggaran")
         .from("m_anggaran as a")
         .leftJoin(
           "r_departemen as b",
