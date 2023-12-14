@@ -776,7 +776,7 @@ let getotalkelmataanggaranpk = (entitas1, kdkelmatanggaran) => {
       let data = db.knex1
         .sum("a.nominal as nominal")
         .from("h_realisasi as a")
-        .leftJoin("h_pengajuan as d", "a.id_pengajuan", "d.id")
+        .leftJoin("h_pengajuan_pk as d", "a.id_pengajuan", "d.id")
         .leftJoin("h_pengajuan as ea", "d.id_pengajuan", "ea.id")
         .leftJoin("m_anggaran as c", "ea.id_anggaran", "c.id")
         .leftJoin(
@@ -790,7 +790,7 @@ let getotalkelmataanggaranpk = (entitas1, kdkelmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_pengajuan", 2)
-        .where("d.jenis_pengajuan", "PK")
+        .where("ea.jenis_pengajuan", "PK")
         .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
         .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("b.kode_entitas", entitas1);

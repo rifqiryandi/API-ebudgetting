@@ -275,6 +275,17 @@ function reportrealisasi(req, res) {
         } else {
           subpresentase = 0;
         }
+
+        let subpresentaseytd = (
+          (totalsubrealisasi / (presentase * totalsubanggaran)) *
+          100
+        ).toFixed(1);
+
+        if (isNaN(subpresentaseytd) == 0) {
+          subpresentaseytd = subpresentaseytd;
+        } else {
+          subpresentaseytd = 0;
+        }
         // let subpresentase = fypersencse;
         let totalsubsisanggaran = sisaanggarancse + sisaanggarandir + sisaanggarancomm;
 
@@ -304,8 +315,9 @@ function reportrealisasi(req, res) {
 
           totalsubrealisasi:totalsubrealisasi,
           totalsubanggaran:totalsubanggaran,
+          subpresentasefy:subpresentase,
           totalsubanggaranytd:totalsubangganytd,
-          subpresentase:subpresentase,
+          subpresentaseytd:subpresentaseytd,
           totalsubsisanggaran:totalsubsisanggaran,
 
 
