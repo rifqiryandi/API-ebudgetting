@@ -2795,7 +2795,7 @@ let listpengajaunpkvalidid = (
           } else {
           }
         })
-        .whereILike("a.status_pengajuan", `%${status_pengajuan || ""}%`)
+        .whereILike("i.status_pengajuan", `%${status_pengajuan || ""}%`)
         .whereILike("a.jenis_pengajuan", `%${jenis_pengajuan || ""}%`)
         .whereILike("i.id", `%${idpengajuan || ""}%`)
         .orderBy([
