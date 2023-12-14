@@ -2326,7 +2326,7 @@ let retur = (
                 // id_pengajuan: id_pengajuan_p,
               })
               .update({
-                status: 1,
+                status: 2,
               });
           })
           .then(trx.commit)
@@ -2430,7 +2430,7 @@ let returpk = (
                 // id_pengajuan: id_pengajuan_p,
               })
               .update({
-                status: 1,
+                status: 2,
               });
           })
           .then(trx.commit)
