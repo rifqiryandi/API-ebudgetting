@@ -687,7 +687,7 @@ let getkodesubsponsorship = () => {
         )
         .whereIn(
           "ai.kode_sub_mata_anggaran",
-          [550009, 550017, 550401, 550506, 550507]
+          [550009, 550017, 550401, 550506, 550507,580804]
         );
       resolve(data);
     } catch (error) {
