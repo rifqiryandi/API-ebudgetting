@@ -164,6 +164,9 @@ exports.listfilerealisasi = (req, res) => {
   let jenis_dokumen = req.body.jenis_dokumen;
   let query = model.listfilerealisasi(id_realisasi, jenis_dokumen);
   let folder = path.join(__dirname, "../../uploads");
+  let folderupload = (__dirname, "/uploads");
+  let folderawal = path.basename(path.join(path.dirname(__dirname),"../"));
+  let ha = req.protocol + '://' + req.get('host') + '/' + folderawal + folderupload;
   query
     .then((result) => {
       // console.log(result.length);
@@ -173,11 +176,13 @@ exports.listfilerealisasi = (req, res) => {
         let kodeunik = result[i].kode_unik;
         let lampiran = result[i].lampiran;
         // let berkas = folder + "/" + kodeunik + "/" + lampiran;
+        // let berkas =
+        //   "http://10.60.64.55/web-npp-tes/uploads/realisasi/" +
+        //   kodeunik +
+        //   "/" +
+        //   lampiran;
         let berkas =
-          "http://10.60.64.55/web-npp-tes/uploads/realisasi/" +
-          kodeunik +
-          "/" +
-          lampiran;
+        ha + "/" + kodeunik + "/" + lampiran;
         data_arr.push({
           kode_unik: result[i].kode_unik,
           lampiran: result[i].lampiran,
