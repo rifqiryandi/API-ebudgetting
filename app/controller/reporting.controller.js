@@ -6,9 +6,9 @@ function reportrealisasi(req, res) {
   let kdmatanggaran = req.body.kdmatanggaran;
   let kdkelmatanggaran = req.body.kdkelmatanggaran;
   let query = model.reportrealisasi(kdmatanggaran);
-  let entitas1 = 711;
-  let entitas2 = 712;
-  let entitas3 = 753;
+  let entitas1 = 753;
+  let entitas2 = 711;
+  let entitas3 = 712;
   query
     .then(async (result) => {
       var data_arr = [];
