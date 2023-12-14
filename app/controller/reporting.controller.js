@@ -1167,13 +1167,11 @@ function reportrealisasidepart(req, res) {
             100
           ).toFixed(1);
 
-          // if (isNaN(kelmtytdepart)) {
-          //   kelmtytdepart = 0;
-          // }else if (isFinite(kelmtytdepart)){
-          //   kelmtytdepart = 0;
-          // } else {
-          //   kelmtytdepart = kelmtytdepart;
-          // }
+          if (isNaN(kelmtytdepart)) {
+            kelmtytdepart = 0;
+          }else {
+            kelmtytdepart = kelmtytdepart;
+          }
           
 
           let kelsisamtanggaran =
