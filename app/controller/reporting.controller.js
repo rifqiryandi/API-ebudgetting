@@ -1014,12 +1014,12 @@ function reportrealisasidepart(req, res) {
           100
         ).toFixed(1);
 
-        if (isNaN(ytddepart) == 0) {
-          ytddepart = ytddepart;
+        if (isNaN(ytddepart)) {
+          ytddepart = 0;
         } else if (ytddepart == Number.POSITIVE_INFINITY || ytddepart == Number.NEGATIVE_INFINITY){
           ytddepart = 0;
         } else {
-          ytddepart = 0;
+          ytddepart = ytddepart;
         }
 
         data_arrdepart.push({
@@ -1028,8 +1028,8 @@ function reportrealisasidepart(req, res) {
           nominalrealisasidepart: realisasidepart,
           anggaranfydepart: anggaranfy,
           anggaranytddepart: anggaranytddepart,
-          fycse: fydepart,
-          ytdcse: ytddepart,
+          fydepart: fydepart,
+          ytddepart: ytddepart,
           sisaanggarancse: sisaanggarandepart,
         });
         // console.log(ytddepart)
@@ -1167,7 +1167,7 @@ function reportrealisasidepart(req, res) {
             100
           ).toFixed(1);
 
-          if (isNaN(kelmtytdepart) == 0) {
+          if (isNaN(kelmtytdepart)) {
             kelmtytdepart = 0;
           }else if (isFinite(kelmtytdepart)){
             kelmtytdepart = 0;
@@ -1200,9 +1200,9 @@ function reportrealisasidepart(req, res) {
         nominalmatarealisasidepart: realisasikeldepart,
         nominalmataanggaranfydepart: nominalkelmataanggarandepartfy,
         mataanggaranytddepart: kelmataanggaranytdcse,
-        fydepart: kelmtfydepart,
-        ytddepart: kelmtytdepart,
-        sisaanggarancse: kelsisamtanggarancse,
+        fydepartkel: kelmtfydepart,
+        ytddepartkel: kelmtytdepart,
+        sisaanggarankel: kelsisamtanggarancse,
       });
 
       data_arrmatadepart.push({
@@ -1211,9 +1211,9 @@ function reportrealisasidepart(req, res) {
         nominalmatarealisasidepart: realisasidepartmata,
         nominalmataanggaranfydepart: nominalmataanggaranfydepart,
         mataanggaranytddepart: mataanggaranytdepart,
-        fydepart: mtfydepart,
-        ytddepart: mtytdepart,
-        sisaanggarancse: sisamtanggarandepart,
+        fydepartmata: mtfydepart,
+        ytddepartmata: mtytdepart,
+        sisaanggaranmata: sisamtanggarandepart,
       });
       const datagabung = data_arrkeldepart.concat(
         data_arrmatadepart,
