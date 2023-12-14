@@ -1197,7 +1197,7 @@ function realisasi(req, res) {
   let pkp = req.body.pkp;
   let nomor_faktur = req.body.nomor_faktur;
   let tanggal_faktur = req.body.tanggal_faktur;
-  let jenis_pengajaun = req.body.jenis_pengajaun;
+  let jenis_pengajuan = req.body.jenis_pengajuan;
   let query = model.realisasi(
     id_pengajuan,
     tanggal_pengajuan,
@@ -1210,7 +1210,7 @@ function realisasi(req, res) {
     pkp,
     nomor_faktur,
     tanggal_faktur,
-    jenis_pengajaun
+    jenis_pengajuan
   );
   query
     .then((result) => {
