@@ -112,6 +112,11 @@ exports.listfile = (req, res) => {
   let idpengajuan = req.body.idpengajuan;
   let query = model.listfile(idpengajuan);
   let folder = path.join(__dirname, "../../uploads");
+  let folderupload = (__dirname, "/uploads");
+  let folderawal = path.basename(path.join(path.dirname(__dirname),"../"));
+  let ha = req.protocol + '://' + req.get('host') + '/' + folderawal + folderupload;
+  // var fullUrl = folder+ "/";
+  
   query
     .then((result) => {
       // console.log(result.length);
@@ -120,17 +125,16 @@ exports.listfile = (req, res) => {
         // console.log(folder);
         let kodeunik = result[i].kode_unik;
         let lampiran = result[i].lampiran;
-        // let berkas = folder + "/" + kodeunik + "/" + lampiran;
         let berkas =
-          "http://10.60.64.55/web-npp-tes/uploads/" + kodeunik + "/" + lampiran;
+        ha + "/" + kodeunik + "/" + lampiran;
         data_arr.push({
           kode_unik: result[i].kode_unik,
           lampiran: result[i].lampiran,
           link: berkas,
         });
-        // console.log(bsu_keg);
+       
       }
-      // console.log(data_arr);
+     
       if (result.length >= 1) {
         res.status(200).json({
           responCode: 200,

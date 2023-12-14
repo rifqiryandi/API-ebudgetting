@@ -146,6 +146,7 @@ let getrealisasi = (kode_sub_mata_anggaran, entitas1) => {
         )
         .where("c.tahun", year)
         .where("a.status_pengajuan", 2)
+        .whereNot("d.jenis_pengajuan", "PK")
         .where("c.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
         .where("b.kode_entitas", entitas1);
 
@@ -320,6 +321,36 @@ let totalrealisasi = (opexs) => {
           "ca.kode_sub_mata_anggaran"
         )
         .where("ca.opex", opexs)
+        .whereNot("b.jenis_pengajuan", "PK")
+        .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
+        .where("a.status_pengajuan", 2);
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      // console.log(error);
+      resolve(false);
+    }
+  });
+};
+
+let totalrealisasipk = (opexs) => {
+  var d = new Date();
+  let year = d.getFullYear();
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.nominal as nominal")
+        .from("h_realisasi as a")
+        .leftJoin("h_pengajuan_pk as b", "a.id_pengajuan", "b.id")
+        .leftJoin("h_pengajuan as e", "b.id_pengajuan", "e.id")
+        .leftJoin("m_anggaran as c", "e.id_anggaran", "c.id")
+        .leftJoin(
+          "r_sub_mata_anggaran as ca",
+          "c.kode_sub_mata_anggaran",
+          "ca.kode_sub_mata_anggaran"
+        )
+        .where("ca.opex", opexs)
+        .where("e.jenis_pengajuan", "PK")
         .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
         .where("a.status_pengajuan", 2);
       // console.log(data);
@@ -451,6 +482,7 @@ let getotalmataanggaran = (entitas1, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_pengajuan", 2)
+        .whereNot("d.jenis_pengajuan", "PK")
         .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
         .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("b.kode_entitas", entitas1);
@@ -723,6 +755,42 @@ let getotalkelmataanggaran = (entitas1, kdkelmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_pengajuan", 2)
+        .whereNot("d.jenis_pengajuan", "PK")
+        .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
+        .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
+        .where("b.kode_entitas", entitas1);
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      // console.log(error);
+      resolve(false);
+    }
+  });
+};
+
+let getotalkelmataanggaranpk = (entitas1, kdkelmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.nominal as nominal")
+        .from("h_realisasi as a")
+        .leftJoin("h_pengajuan as d", "a.id_pengajuan", "d.id")
+        .leftJoin("h_pengajuan as ea", "d.id_pengajuan", "ea.id")
+        .leftJoin("m_anggaran as c", "ea.id_anggaran", "c.id")
+        .leftJoin(
+          "r_departemen as b",
+          "c.kode_departemen",
+          "b.kode_departement"
+        )
+        .leftJoin(
+          "r_sub_mata_anggaran as e",
+          "c.kode_sub_mata_anggaran",
+          "e.kode_sub_mata_anggaran"
+        )
+        .where("a.status_pengajuan", 2)
+        .where("d.jenis_pengajuan", "PK")
         .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
         .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("b.kode_entitas", entitas1);
@@ -995,6 +1063,38 @@ let realisasidepart = (kode_sub_mata_anggaran, kddepartemen) => {
           "b.kode_departement"
         )
         .where("a.status_pengajuan", 2)
+        .whereNot("d.jenis_pengajuan", "PK")
+        .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
+        .where("c.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
+        .where("b.kode_departement", kddepartemen);
+
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      console.log(error);
+      // resolve(false);
+    }
+  });
+};
+
+let realisasidepartpk = (kode_sub_mata_anggaran, kddepartemen) => {
+  var d = new Date();
+  let year = d.getFullYear();
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.nominal as nominal")
+        .from("h_realisasi as a")
+        .leftJoin("h_pengajuan_pk as e", "a.id_pengajuan", "e.id")
+        .leftJoin("h_pengajuan as d", "e.id_pengajuan", "d.id")
+        .leftJoin("m_anggaran as c", "d.id_anggaran", "c.id")
+        .leftJoin(
+          "r_departemen as b",
+          "c.kode_departemen",
+          "b.kode_departement"
+        )
+        .where("a.status_pengajuan", 2)
+        .where("d.jenis_pengajuan", "PK")
         .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
         .where("c.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
         .where("b.kode_departement", kddepartemen);
@@ -1029,6 +1129,42 @@ let realisasidepartmata = (kddepartemen, kdmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_pengajuan", 2)
+        .whereNot("d.jenis_pengajuan", "PK")
+        .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
+        .where("e.kode_mata_anggaran", kdmatanggaran)
+        .where("b.kode_departement", kddepartemen);
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      // console.log(error);
+      resolve(false);
+    }
+  });
+};
+
+let realisasidepartmatapk = (kddepartemen, kdmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.nominal as nominal")
+        .from("h_realisasi as a")
+        .leftJoin("h_pengajuan_pk as ea", "a.id_pengajuan", "ea.id")
+        .leftJoin("h_pengajuan as d", "ea.id_pengajuan", "d.id")
+        .leftJoin("m_anggaran as c", "d.id_anggaran", "c.id")
+        .leftJoin(
+          "r_departemen as b",
+          "c.kode_departemen",
+          "b.kode_departement"
+        )
+        .leftJoin(
+          "r_sub_mata_anggaran as e",
+          "c.kode_sub_mata_anggaran",
+          "e.kode_sub_mata_anggaran"
+        )
+        .where("a.status_pengajuan", 2)
+        .where("d.jenis_pengajuan", "PK")
         .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
         .where("e.kode_mata_anggaran", kdmatanggaran)
         .where("b.kode_departement", kddepartemen);
@@ -1194,6 +1330,41 @@ let getotalkelmataanggarandepart = (kddepartemen, kdkelmatanggaran) => {
           "e.kode_sub_mata_anggaran"
         )
         .where("a.status_pengajuan", 2)
+        .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
+        .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
+        .where("b.kode_departement", kddepartemen);
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      // console.log(error);
+      resolve(false);
+    }
+  });
+};
+
+let getotalkelmataanggarandepartpk = (kddepartemen, kdkelmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.nominal as nominal")
+        .from("h_realisasi as a")
+        .leftJoin("h_pengajuan_pk as ea", "a.id_pengajuan", "ea.id")
+        .leftJoin("h_pengajuan as d", "ea.id_pengajuan", "d.id")
+        .leftJoin("m_anggaran as c", "d.id_anggaran", "c.id")
+        .leftJoin(
+          "r_departemen as b",
+          "c.kode_departemen",
+          "b.kode_departement"
+        )
+        .leftJoin(
+          "r_sub_mata_anggaran as e",
+          "c.kode_sub_mata_anggaran",
+          "e.kode_sub_mata_anggaran"
+        )
+        .where("a.status_pengajuan", 2)
+        .where("d.jenis_pengajuan", "PK")
         .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
         .where("e.kode_kelompok_mata_anggaran", kdkelmatanggaran)
         .where("b.kode_departement", kddepartemen);
@@ -1522,6 +1693,72 @@ let getsumswitchanggarantambahsponsor = (opex, kode_sub_mata_anggaran) => {
   });
 };
 
+let getrealisasipk = (kode_sub_mata_anggaran, entitas1) => {
+  var d = new Date();
+  let year = d.getFullYear();
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.nominal as nominal")
+        .from("h_realisasi as a")
+        .leftJoin("h_pengajuan_pk as d", "a.id_pengajuan", "d.id")
+        .leftJoin("h_pengajuan as e", "d.id_pengajuan", "e.id")
+        .leftJoin("m_anggaran as c", "e.id_anggaran", "c.id")
+        .leftJoin(
+          "r_departemen as b",
+          "c.kode_departemen",
+          "b.kode_departement"
+        )
+        .where("c.tahun", year)
+        .where("a.status_pengajuan", 2)
+        .where("e.jenis_pengajuan", "PK")
+        .where("c.kode_sub_mata_anggaran", kode_sub_mata_anggaran)
+        .where("b.kode_entitas", entitas1);
+
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      console.log(error);
+      // resolve(false);
+    }
+  });
+};
+
+let getotalmataanggaranpk = (entitas1, kdmatanggaran) => {
+  var d = new Date();
+  let year = d.getFullYear();
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.nominal as nominal")
+        .from("h_realisasi as a")
+        .leftJoin("h_pengajuan_pk as ba", "a.id_pengajuan", "ba.id")
+        .leftJoin("h_pengajuan as d", "ba.id_pengajuan", "d.id")
+        .leftJoin("m_anggaran as c", "d.id_anggaran", "c.id")
+        .leftJoin(
+          "r_departemen as b",
+          "c.kode_departemen",
+          "b.kode_departement"
+        )
+        .leftJoin(
+          "r_sub_mata_anggaran as e",
+          "c.kode_sub_mata_anggaran",
+          "e.kode_sub_mata_anggaran"
+        )
+        .where("a.status_pengajuan", 2)
+        .where("d.jenis_pengajuan", "PK")
+        .andWhereRaw(`YEAR(a.validasi_date) = ?`, year)
+        .where("e.kode_mata_anggaran", kdmatanggaran)
+        .where("b.kode_entitas", entitas1);
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      // console.log(error);
+      resolve(false);
+    }
+  });
+};
+
 module.exports = {
   reportrealisasi,
   getanggaranfy,
@@ -1572,6 +1809,13 @@ module.exports = {
   anggaranfysponsor,
   getsumtopupanggaransponsor,
   getsumswitchanggarankurangsponsor,
-  getsumswitchanggarantambahsponsor
+  getsumswitchanggarantambahsponsor,
+  getrealisasipk,
+  totalrealisasipk,
+  getotalmataanggaranpk,
+  getotalkelmataanggaranpk,
+  realisasidepartpk,
+  realisasidepartmatapk,
+  getotalkelmataanggarandepartpk
   
 };

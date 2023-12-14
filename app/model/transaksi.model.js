@@ -470,7 +470,8 @@ let listpresentasianggaran = (
   // kddepartemen,
   perPage,
   currentPage,
-  cari
+  cari,
+  tahun
 ) => {
   var pagination = {};
   var per_page = perPage;
@@ -518,6 +519,7 @@ let listpresentasianggaran = (
           );
         }
       })
+      .where("a.tahun", tahun)
       .first(),
     db.knex1
       .select(
@@ -565,7 +567,8 @@ let listpresentasianggaran = (
               .orWhereILike("e.deskripsi", `%${params || ""}%`)
           );
         }
-      }),
+      })
+      .where("a.tahun", tahun),
   ])
     .then(([total, rows]) => {
       // console.log(total);
@@ -2455,7 +2458,8 @@ let realisasi = (
   user_id,
   pkp,
   nomor_faktur,
-  tanggal_faktur
+  tanggal_faktur,
+  jenis_pengajaun
 ) => {
   var id_pengajuan_p = id_pengajuan;
   var kode_pengajuan_p = kode_pengajuan;
@@ -2469,9 +2473,9 @@ let realisasi = (
     today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
   var dateTime = dateNow + " " + time;
   return new Promise(async function (resolve) {
-    try {
-      let data = db.knex1
-        .insert([
+    db.knex1
+      .transaction(function (trx) {
+        db.knex1.insert([
           {
             id_pengajuan: id_pengajuan_p,
             tanggal_pengajuan: tanggal_pengajuan,
@@ -2490,7 +2494,47 @@ let realisasi = (
             tanggal_faktur: tanggal_faktur,
           },
         ])
-        .into("h_realisasi");
+        .into("h_realisasi")
+          .then(async function (trx) {
+            if (jenis_pengajaun === "PK"){
+            return await db
+              .knex1("h_pengajuan_pk")
+              .where({
+                id: id_pengajuan_p,
+                // id_pengajuan: id_pengajuan_p,
+              })
+              .update({
+                status_pengajuan: 3,
+              });
+            }else{
+              return await db
+              .knex1("h_pengajuan")
+              .where({
+                id: id_pengajuan_p,
+                // id_pengajuan: id_pengajuan_p,
+              })
+              .update({
+                status_pengajuan: 3,
+              });
+            }
+          })
+          .then(trx.commit)
+          .catch(trx.rollback);
+      })
+      .then(function (inserts) {
+        // let id_peng = trx[0];
+        resolve(inserts);
+        // console.log(inserts);
+      })
+      .catch(function (error) {
+        resolve(error);
+        // console.log(error);
+      });
+  });
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+       
       resolve(data);
     } catch (error) {
       // console.log("asd");

@@ -101,12 +101,14 @@ function listpresentasianggaran(req, res) {
   let perPage = req.body.perPage;
   let currentPage = req.body.currentPage;
   let cari = req.body.cari;
+  let tahun = req.body.tahun
   let query = model.listpresentasianggaran(
     // kdsubmatanggaran,
     // kddepartemen,
     perPage,
     currentPage,
-    cari
+    cari,
+    tahun
   );
   query
     .then((result) => {
@@ -675,12 +677,51 @@ function listrealisasi(req, res) {
   );
   query
     .then((result) => {
+      var data_arr = [];
+      for (let i = 0; i < result.data.length; i++) {
+        let tanggal_pengajuan = result.data[i].tanggal_pengajuan;
+        let tanggal_faktur = result.data[i].tanggal_faktur
+        let tanggal_pengajuandate = helper.formatDate(tanggal_pengajuan);
+        let tanggal_fakturdate = helper.formatDate(tanggal_faktur);
+        
+        data_arr.push({
+          kode_entitas:result.data[i].kode_entitas,
+          kode_departement:result.data[i].kode_departement,
+          kode_sub_mata_anggaran:result.data[i].kode_sub_mata_anggaran,
+          id:result.data[i].id,
+          jenis_pengajuan:result.data[i].jenis_pengajuan,
+          id_anggaran:result.data[i].id_anggaran,
+          id_kegiatan:result.data[i].id_kegiatan,
+          uraian_kegiatan:result.data[i].uraian_kegiatan,
+          nama_entitas:result.data[i].nama_entitas,
+          nama_departement:result.data[i].nama_departement,
+          nama_kelompok_mata_anggaran:result.data[i].nama_kelompok_mata_anggaran,
+          nama_mata_anggaran:result.data[i].nama_mata_anggaran,
+          nama_sub_mata_anggaran:result.data[i].nama_sub_mata_anggaran,
+          nominal:result.data[i].nominal,
+          tahun:result.data[i].tahun,
+          status_pengajuan:result.data[i].status_pengajuan,
+          uraian_pengajuan:result.data[i].uraian_pengajuan,
+          kode_pengajuan:result.data[i].kode_pengajuan,
+          kode_buku:result.data[i].kode_buku,
+          tanggal_pengajuan:tanggal_pengajuandate,
+          tanggal_realisasi:result.data[i].tanggal_realisasi,
+          keterangan:result.data[i].keterangan,
+          id_realisasi:result.data[i].id_realisasi,
+          status_realisasi:result.data[i].status_realisasi,
+          pkp:result.data[i].pkp,
+          status_validasi:result.data[i].status_validasi,
+          validasi_date:result.data[i].validasi_date,
+          nomor_faktur:result.data[i].nomor_faktur,
+          tanggal_faktur:tanggal_fakturdate
+        });
+      }
       // console.log(result.length);
       if (result.data.length >= 1) {
         res.status(200).json({
           responCode: 200,
           Msg: "Data Tersedia",
-          data: result,
+          data: data_arr,
         });
       } else {
         res.status(400).json({
@@ -1147,6 +1188,7 @@ function realisasi(req, res) {
   let pkp = req.body.pkp;
   let nomor_faktur = req.body.nomor_faktur;
   let tanggal_faktur = req.body.tanggal_faktur;
+  let jenis_pengajaun = req.body.jenis_pengajaun;
   let query = model.realisasi(
     id_pengajuan,
     tanggal_pengajuan,
@@ -1158,7 +1200,8 @@ function realisasi(req, res) {
     user_id,
     pkp,
     nomor_faktur,
-    tanggal_faktur
+    tanggal_faktur,
+    jenis_pengajaun
   );
   query
     .then((result) => {
