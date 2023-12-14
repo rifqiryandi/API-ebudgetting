@@ -446,17 +446,17 @@ function reportrealisasi(req, res) {
       mataanggaranytdcomm = Math.floor(nominalmataanggarancomfy * presentase);
 
       let mtfycse = (
-        (realisasicse[0].nominal + realisasicsepk[0].nominal  / nominalmataanggarancsefy) *
+        ((realisasicse[0].nominal + realisasicsepk[0].nominal)  / nominalmataanggarancsefy) *
         100
       ).toFixed(1);
 
       let mtfydir = (
-        (realisasidir[0].nominal + realisasidirpk[0].nominal / nominalmataanggarandirfy) *
+        ((realisasidir[0].nominal + realisasidirpk[0].nominal) / nominalmataanggarandirfy) *
         100
       ).toFixed(1);
 
       let mtfycomm = (
-        (realisasicomm[0].nominal + realisasicommpk[0].nominal / nominalmataanggarancomfy) *
+        ((realisasicomm[0].nominal + realisasicommpk[0].nominal) / nominalmataanggarancomfy) *
         100
       ).toFixed(1);
 
@@ -479,17 +479,17 @@ function reportrealisasi(req, res) {
       }
 
       let mtytdcse = (
-        (realisasicse[0].nominal + realisasicsepk[0].nominal/ (presentase * nominalmataanggarancsefy)) *
+        ((realisasicse[0].nominal + realisasicsepk[0].nominal)/ (presentase * nominalmataanggarancsefy)) *
         100
       ).toFixed(1);
 
       let mtytddir = (
-        (realisasidir[0].nominal + realisasidirpk[0].nominal / (presentase * nominalmataanggarandirfy)) *
+        ((realisasidir[0].nominal + realisasidirpk[0].nominal) / (presentase * nominalmataanggarandirfy)) *
         100
       ).toFixed(1);
 
       let mtytdcomm = (
-        (realisasicomm[0].nominal + realisasicommpk[0].nominal / (presentase * nominalmataanggarancomfy)) *
+        ((realisasicomm[0].nominal + realisasicommpk[0].nominal) / (presentase * nominalmataanggarancomfy)) *
         100
       ).toFixed(1);
 
@@ -659,17 +659,17 @@ function reportrealisasi(req, res) {
       );
 
       let kelmtfycse = (
-        (realisasicsekel[0].nominal + realisasicsekelpk[0].nominal  / nominalkelmataanggarancsefy) *
+        ((realisasicsekel[0].nominal + realisasicsekelpk[0].nominal)  / nominalkelmataanggarancsefy) *
         100
       ).toFixed(1);
 
       let kelmtfydir = (
-        (realisasidirkel[0].nominal + realisasidirkelpk[0].nominal  / nominalkelmataanggarandirfy) *
+        ((realisasidirkel[0].nominal + realisasidirkelpk[0].nominal)  / nominalkelmataanggarandirfy) *
         100
       ).toFixed(1);
 
       let kelmtfycomm = (
-        (realisasicommkel[0].nominal + realisasicommkelpk[0].nominal  / nominalkelmataanggarancomfy) *
+        ((realisasicommkel[0].nominal + realisasicommkelpk[0].nominal)  / nominalkelmataanggarancomfy) *
         100
       ).toFixed(1);
 
@@ -692,19 +692,19 @@ function reportrealisasi(req, res) {
       }
 
       let kelmtytdcse = (
-        (realisasicsekel[0].nominal + realisasicsekelpk[0].nominal /
+        ((realisasicsekel[0].nominal + realisasicsekelpk[0].nominal) /
           (presentase * nominalkelmataanggarancsefy)) *
         100
       ).toFixed(1);
 
       let kelmtytddir = (
-        (realisasidirkel[0].nominal + realisasidirkelpk[0].nominal /
+        ((realisasidirkel[0].nominal + realisasidirkelpk[0].nominal) /
           (presentase * nominalkelmataanggarandirfy)) *
         100
       ).toFixed(1);
 
       let kelmtytdcomm = (
-        (realisasicommkel[0].nominal + realisasicommkelpk[0].nominal /
+        ((realisasicommkel[0].nominal + realisasicommkelpk[0].nominal) /
           (presentase * nominalkelmataanggarancomfy)) *
         100
       ).toFixed(1);
@@ -731,7 +731,7 @@ function reportrealisasi(req, res) {
       let kelsisamtanggarancomm;
 
       kelsisamtanggarancse =
-        nominalkelmataanggarancsefy - realisasicsekel[0].nominal + realisasicsekelpk[0].nominal;
+        nominalkelmataanggarancsefy - (realisasicsekel[0].nominal + realisasicsekelpk[0].nominal);
       kelsisamtanggarandir =
         nominalkelmataanggarandirfy - realisasidirkel[0].nominal + realisasidirkelpk[0].nominal;
       kelsisamtanggarancomm =
@@ -1079,7 +1079,7 @@ function reportrealisasidepart(req, res) {
       let mataanggaranytdepart = Math.floor(nominalmataanggaranfydepart * presentase);
 
       let mtfydepart = (
-        (realisasidepartmata[0].nominal + realisasidepartmatapk[0].nominal / nominalmataanggaranfydepart) *
+        ((realisasidepartmata[0].nominal + realisasidepartmatapk[0].nominal) / nominalmataanggaranfydepart) *
         100
       ).toFixed(1);
 
@@ -1090,7 +1090,7 @@ function reportrealisasidepart(req, res) {
       }
 
       let mtytdepart = (
-        (realisasidepartmata[0].nominal + realisasidepartmatapk[0].nominal / (presentase * nominalmataanggaranfydepart)) *
+        ((realisasidepartmata[0].nominal + realisasidepartmatapk[0].nominal) / (presentase * nominalmataanggaranfydepart)) *
         100
       ).toFixed(1);
 
@@ -1100,7 +1100,7 @@ function reportrealisasidepart(req, res) {
         mtytdepart = 0.0;
       }
 
-      let sisamtanggarandepart = nominalmataanggaranfydepart - realisasidepartmata[0].nominal + realisasidepartmatapk[0].nominal;
+      let sisamtanggarandepart = nominalmataanggaranfydepart - (realisasidepartmata[0].nominal + realisasidepartmatapk[0].nominal);
 
       let realisasikeldepart = await model.getotalkelmataanggarandepart(
         kddepartemen,
@@ -1151,7 +1151,7 @@ function reportrealisasidepart(req, res) {
           );
         
           let kelmtfydepart = (
-            (realisasikeldepart[0].nominal + realisasikeldepartpk[0].nominal / nominalkelmataanggarandepartfy) *
+            ((realisasikeldepart[0].nominal + realisasikeldepartpk[0].nominal) / nominalkelmataanggarandepartfy) *
             100
           ).toFixed(1);
 
@@ -1162,7 +1162,7 @@ function reportrealisasidepart(req, res) {
           }
 
           let kelmtytdepart = (
-            (realisasikeldepart[0].nominal + realisasikeldepartpk[0].nominal /
+            ((realisasikeldepart[0].nominal + realisasikeldepartpk[0].nominal) /
               (presentase * nominalkelmataanggarandepartfy)) *
             100
           ).toFixed(1);
@@ -1176,8 +1176,8 @@ function reportrealisasidepart(req, res) {
           }
           
 
-          let kelsisamtanggarancse =
-          nominalkelmataanggarandepartfy - realisasikeldepart[0].nominal + realisasikeldepartpk[0].nominal;
+          let kelsisamtanggaran =
+          nominalkelmataanggarandepartfy - (realisasikeldepart[0].nominal + realisasikeldepartpk[0].nominal);
 
 
       let getmataanggaran = await model.getmataanggaran(kdmatanggaran);
@@ -1202,7 +1202,7 @@ function reportrealisasidepart(req, res) {
         mataanggaranytddepart: kelmataanggaranytdcse,
         fydepartkel: kelmtfydepart,
         ytddepartkel: kelmtytdepart,
-        sisaanggarankel: kelsisamtanggarancse,
+        sisaanggarankel: kelsisamtanggaran,
       });
 
       data_arrmatadepart.push({
