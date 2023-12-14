@@ -1286,13 +1286,30 @@ function totalanggaran(req, res) {
   let opexs = req.body.opexs;
   let query = model.totalanggaran(opexs);
   query
-    .then((result) => {
-      // console.log(result.length);
+    .then(async (result) => {
+      // console.log(result[0].nominal_anggaran );
+      let anggrantoup = await model.topupanggaran(opexs);
+      // console.log(anggrantoup[0].nominaltopup);
+      if (result[0].nominal_anggaran === null) {
+        nominal = 0;
+      } else {
+        nominal = result[0].nominal_anggaran;
+      }
+      if (anggrantoup[0].nominaltopup === null) {
+        nominaltopup = 0;
+      } else {
+        nominaltopup = anggrantoup[0].nominaltopup;
+      }
+      let hasil = nominal + nominaltopup;
+      // console.log(hasil)
       if (result) {
         res.status(200).json({
           responCode: 200,
           Msg: "Data Tersedia",
-          data: result,
+          data: [{
+            nominal_anggaran:hasil,
+            sisa_pengajuan:result[0].sisa_anggaran
+            }],
         });
       } else {
         res.status(400).json({

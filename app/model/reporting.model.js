@@ -368,24 +368,15 @@ let totalanggaran = (opexs) => {
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
-        // .sum("a.nominal as nominal_anggaran")
-        // .sum("a.sisa_pengajuan as sisa_anggaran")
-        // .from("m_anggaran as a")
-        // .leftJoin(
-        //   "r_sub_mata_anggaran as c",
-        //   "c.kode_sub_mata_anggaran",
-        //   "a.kode_sub_mata_anggaran"
-        // )
-        // .where("c.opex", opexs)
-        // .where("a.tahun", year)
-        // .where("a.status_anggaran", 2);
         .sum("a.nominal as nominal_anggaran")
+        .sum("a.sisa_pengajuan as sisa_anggaran")
         .from("m_anggaran as a")
         .leftJoin(
-          "r_departemen as b",
-          "a.kode_departemen",
-          "b.kode_departement"
+          "r_sub_mata_anggaran as c",
+          "c.kode_sub_mata_anggaran",
+          "a.kode_sub_mata_anggaran"
         )
+        .where("c.opex", opexs)
         .where("a.tahun", year)
         .where("a.status_anggaran", 2);
       // console.log(data);
@@ -1768,6 +1759,39 @@ let getotalmataanggaranpk = (entitas1, kdmatanggaran) => {
   });
 };
 
+let topupanggaran = (opexs) => {
+  var d = new Date();
+  let year = d.getFullYear();
+  return new Promise(async function (resolve) {
+    try {
+      let data = db.knex1
+        .sum("a.nominal_topup as nominaltopup")
+        .from("h_topup_anggaran as a")
+        .leftJoin("m_anggaran as b", "a.id_anggaran", "b.id")
+        .leftJoin(
+          "r_departemen as c",
+          "b.kode_departemen",
+          "c.kode_departement"
+        )
+        .leftJoin(
+          "r_sub_mata_anggaran as e",
+          "b.kode_sub_mata_anggaran",
+          "e.kode_sub_mata_anggaran"
+        )
+        .where("a.status", 2)
+        .where("b.tahun", year)
+        .where("e.opex", opexs);
+      // .groupBy("a.id_anggaran");
+
+      // console.log(data);
+      resolve(data);
+    } catch (error) {
+      // console.log(error);
+      resolve(false);
+    }
+  });
+};
+
 module.exports = {
   reportrealisasi,
   getanggaranfy,
@@ -1825,6 +1849,7 @@ module.exports = {
   getotalkelmataanggaranpk,
   realisasidepartpk,
   realisasidepartmatapk,
-  getotalkelmataanggarandepartpk
+  getotalkelmataanggarandepartpk,
+  topupanggaran
   
 };
