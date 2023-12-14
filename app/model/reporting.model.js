@@ -368,15 +368,24 @@ let totalanggaran = (opexs) => {
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
-        .sum("a.nominal as nominal_anggaran")
-        .sum("a.sisa_pengajuan as sisa_anggaran")
+        // .sum("a.nominal as nominal_anggaran")
+        // .sum("a.sisa_pengajuan as sisa_anggaran")
+        // .from("m_anggaran as a")
+        // .leftJoin(
+        //   "r_sub_mata_anggaran as c",
+        //   "c.kode_sub_mata_anggaran",
+        //   "a.kode_sub_mata_anggaran"
+        // )
+        // .where("c.opex", opexs)
+        // .where("a.tahun", year)
+        // .where("a.status_anggaran", 2);
+        .sum("a.nominal as nominal")
         .from("m_anggaran as a")
         .leftJoin(
-          "r_sub_mata_anggaran as c",
-          "c.kode_sub_mata_anggaran",
-          "a.kode_sub_mata_anggaran"
+          "r_departemen as b",
+          "a.kode_departemen",
+          "b.kode_departement"
         )
-        .where("c.opex", opexs)
         .where("a.tahun", year)
         .where("a.status_anggaran", 2);
       // console.log(data);
