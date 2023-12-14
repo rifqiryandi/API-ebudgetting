@@ -721,11 +721,14 @@ function listrealisasi(req, res) {
         res.status(200).json({
           responCode: 200,
           Msg: "Data Tersedia",
-          total_data:result.total_data,
-          per_page:result.per_page,
-          total_page:result.total_page,
-          current_page:result.current_page,
-          data: data_arr,
+          data:{
+            total_data:result.total_data,
+            per_page:result.per_page,
+            total_page:result.total_page,
+            current_page:result.current_page,
+            data: data_arr,
+          }
+          
         });
       } else {
         res.status(400).json({
