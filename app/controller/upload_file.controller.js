@@ -30,12 +30,13 @@ exports.upload_file = (req, res) => {
           if (err) {
             return res.status(500).send(err);
           }
-          return res.send({ status: "success", path: path });
+          // return res.send({ status: "success", path: path });
+          res.status(200).json({
+            responCode: 200,
+            Msg: "Simpan Data Berhasil",
+          });
         });
-        res.status(200).json({
-          responCode: 200,
-          Msg: "Simpan Data Berhasil",
-        });
+        
       } else {
         res.status(401).json({
           responCode: 401,
@@ -78,12 +79,13 @@ exports.upload_file_realisasi = (req, res) => {
           if (err) {
             return res.status(500).send(err);
           }
-          return res.send({ status: "success", path: path });
+          // return res.send({ status: "success", path: path });
+          res.status(200).json({
+            responCode: 200,
+            Msg: "Simpan Data Berhasil",
+          });
         });
-        res.status(200).json({
-          responCode: 200,
-          Msg: "Simpan Data Berhasil",
-        });
+        
       } else {
         res.status(401).json({
           responCode: 401,
