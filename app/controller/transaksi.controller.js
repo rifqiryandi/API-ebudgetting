@@ -716,12 +716,16 @@ function listrealisasi(req, res) {
           tanggal_faktur:tanggal_fakturdate
         });
       }
-      // console.log(result.length);
+      // console.log(result.total);
       if (result.data.length >= 1) {
         res.status(200).json({
           responCode: 200,
           Msg: "Data Tersedia",
-          data: result,
+          total_data:result.total_data,
+          per_page:result.per_page,
+          total_page:result.total_page,
+          current_page:result.current_page,
+          data: data_arr,
         });
       } else {
         res.status(400).json({
