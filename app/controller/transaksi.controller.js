@@ -681,8 +681,10 @@ function listrealisasi(req, res) {
       for (let i = 0; i < result.data.length; i++) {
         let tanggal_pengajuan = result.data[i].tanggal_pengajuan;
         let tanggal_faktur = result.data[i].tanggal_faktur
+        let tanggal_realisasi = result.data[i].tanggal_realisasi
         let tanggal_pengajuandate = helper.formatDate(tanggal_pengajuan);
         let tanggal_fakturdate = helper.formatDate(tanggal_faktur);
+        let tanggal_realisasidate = helper.formatDate(tanggal_realisasi);
         
         data_arr.push({
           kode_entitas:result.data[i].kode_entitas,
@@ -705,7 +707,7 @@ function listrealisasi(req, res) {
           kode_pengajuan:result.data[i].kode_pengajuan,
           kode_buku:result.data[i].kode_buku,
           tanggal_pengajuan:tanggal_pengajuandate,
-          tanggal_realisasi:result.data[i].tanggal_realisasi,
+          tanggal_realisasi:tanggal_realisasidate,
           keterangan:result.data[i].keterangan,
           id_realisasi:result.data[i].id_realisasi,
           status_realisasi:result.data[i].status_realisasi,
