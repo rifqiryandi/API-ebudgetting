@@ -1245,13 +1245,26 @@ function totalrealisasi(req, res) {
   let opexs = req.body.opexs;
   let query = model.totalrealisasi(opexs);
   query
-    .then((result) => {
+    .then(async(result) => {
       // console.log(result.length);
+      let bebanpk = await model.totalrealisasipk(opexs);
+      // console.log(bebanpk[0].nominal);
+      if (result[0].nominal === null) {
+        nominal = 0;
+      } else {
+        nominal = result[0].nominal;
+      }
+      if (bebanpk[0].nominal === null) {
+        nominalpk = 0;
+      } else {
+        nominalpk = bebanpk[0].nominal;
+      }
+      let hasil = nominal + nominalpk;
       if (result) {
         res.status(200).json({
           responCode: 200,
           Msg: "Data Tersedia",
-          data: result,
+          data: hasil,
         });
       } else {
         res.status(400).json({
