@@ -721,7 +721,7 @@ function listrealisasi(req, res) {
         res.status(200).json({
           responCode: 200,
           Msg: "Data Tersedia",
-          data: data_arr,
+          data: result,
         });
       } else {
         res.status(400).json({
