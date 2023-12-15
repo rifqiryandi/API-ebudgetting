@@ -3047,7 +3047,9 @@ let listopupanggaran = (
         "i.penanggung_jawab",
         "i.keterangan as keterangan_topup",
         "i.id as id_topup",
-        "i.status as status_topup"
+        "i.status as status_topup",
+        "i.create_at",
+        "i.update_at"
       )
       .from("h_topup_anggaran as i")
       .leftJoin("m_anggaran as a", "a.id", "i.id_anggaran")
@@ -3243,7 +3245,8 @@ let switchanggaran = (
                   status: 0,
                   create_at: dateTime,
                   update_at: null,
-                  jenis_pengajuan: 1,
+                  jenis_pengajuan: jenis_switchanggaran,
+                  id_anggaran: idanggaran_awal,
                 },
               ])
               .into("h_notifikasi");
@@ -3403,7 +3406,9 @@ let listswitchanggaran = (
         "i.status",
         "i.status_anggaran",
         "i.id as id_switchanggaran",
-        "i.jenis_switchanggaran"
+        "i.jenis_switchanggaran",
+        "i.create_at",
+        "i.update_at"
       )
       .from("h_m_anggaran as i")
       .leftJoin("m_anggaran as a", "a.id", "i.id_anggaran_awal")
@@ -3572,23 +3577,60 @@ let validasiswitchanggaran = (
         });
     });
   } else {
+    // return new Promise(async function (resolve) {
+    //   try {
+    //     let data = db
+    //       .knex1("h_m_anggaran")
+    //       .where({
+    //         id: id_p,
+    //       })
+    //       .update({
+    //         status_anggaran: status,
+    //         update_at: dateTime,
+    //       });
+    //     // console.log(data);
+    //     resolve(data);
+    //   } catch (error) {
+    //     // console.log(error);
+    //     resolve(error);
+    //   }
+    // });
     return new Promise(async function (resolve) {
-      try {
-        let data = db
-          .knex1("h_m_anggaran")
+      db.knex1
+        .transaction(function (trx) {
+          db.knex1("h_m_anggaran")
           .where({
             id: id_p,
           })
           .update({
             status_anggaran: status,
             update_at: dateTime,
-          });
-        // console.log(data);
-        resolve(data);
-      } catch (error) {
-        // console.log(error);
-        resolve(error);
-      }
+          })
+            .then(async function (trx) {
+              return await db
+                .knex1.insert([
+                  {
+                    id_pengajuan: id_p,
+                    status: 0,
+                    update_at: dateTime,
+                    jenis_pengajuan: 2,
+                    id_anggaran: id_anggaran_final,
+                  },
+                ])
+                .into("h_notifikasi");
+            })
+            .then(trx.commit)
+            .catch(trx.rollback);
+        })
+        .then(function (inserts) {
+          // let id_peng = trx[0];
+          resolve(inserts);
+          // console.log(inserts);
+        })
+        .catch(function (error) {
+          resolve(error);
+          // console.log(error);
+        });
     });
   }
 };

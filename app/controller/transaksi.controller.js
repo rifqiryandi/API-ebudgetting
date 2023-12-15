@@ -1510,12 +1510,46 @@ function listopupanggaran(req, res) {
   );
   query
     .then((result) => {
+      var data_arr = [];
+      for (let i = 0; i < result.data.length; i++) {
+        let create_at = result.data[i].create_at;
+        let update_at = result.data[i].update_at
+        let tanggal_insert = helper.formatDate(create_at);
+        let tanggal_update = helper.formatDate(update_at);
+        
+        data_arr.push({
+          id_anggaran:result.data[i].id_anggaran,
+          nama_entitas:result.data[i].nama_entitas,
+          nama_departement:result.data[i].nama_departement,
+          nama_kelompok_mata_anggaran:result.data[i].nama_kelompok_mata_anggaran,
+          nama_mata_anggaran:result.data[i].nama_mata_anggaran,
+          nama_sub_mata_anggaran:result.data[i].nama_sub_mata_anggaran,
+          nominal_sisa_anggaran:result.data[i].nominal_sisa_anggaran,
+          nominal_awal:result.data[i].nominal_awal,
+          tahun:result.data[i].tahun,
+          keterangan:result.data[i].keterangan,
+          status_anggaran:result.data[i].status_anggaran,
+          nominal_topup:result.data[i].nominal_topup,
+          penanggung_jawab:result.data[i].penanggung_jawab,
+          keterangan_topup:result.data[i].keterangan_topup,
+          id_topup:result.data[i].id_topup,
+          status_topup:result.data[i].status_topup,
+          create_at:tanggal_insert,
+          update_at:tanggal_update
+        });
+      }
       // console.log(result.length);
       if (result.data.length >= 1) {
         res.status(200).json({
           responCode: 200,
           Msg: "Data Tersedia",
-          data: result,
+          data:{
+            total_data:result.total_data,
+            per_page:result.per_page,
+            total_page:result.total_page,
+            current_page:result.current_page,
+            data: data_arr,
+          }
         });
       } else {
         res.status(400).json({
@@ -1632,12 +1666,50 @@ function listswitchanggaran(req, res) {
   );
   query
     .then((result) => {
+      var data_arr = [];
+      for (let i = 0; i < result.data.length; i++) {
+        let create_at = result.data[i].create_at;
+        let update_at = result.data[i].update_at
+        let tanggal_insert = helper.formatDate(create_at);
+        let tanggal_update = helper.formatDate(update_at);
+        
+        data_arr.push({
+          id_anggaran_awal:result.data[i].id_anggaran_awal,
+          id_anggaran_final:result.data[i].id_anggaran_final,
+          nama_entitas_awal:result.data[i].nama_entitas_awal,
+          nama_entitas_final:result.data[i].nama_entitas_final, 
+          nama_departement_awal:result.data[i].nama_departement_awal, 
+          nama_departement_final:result.data[i].nama_departement_final,
+          nama_kelompok_mata_anggaran_awal:result.data[i].nama_kelompok_mata_anggaran_awal, 
+          nama_kelompok_mata_anggaran_final:result.data[i].nama_kelompok_mata_anggaran_final, 
+          nama_mata_anggaran_awal:result.data[i].nama_mata_anggaran_awal, 
+          nama_mata_anggaran_final:result.data[i].nama_mata_anggaran_final, 
+          nama_sub_mata_anggaran_awal:result.data[i].nama_sub_mata_anggaran_awal, 
+          nama_sub_mata_anggaran_final:result.data[i].nama_sub_mata_anggaran_final, 
+          bsu_awal:result.data[i].bsu_awal,
+          bsu_final:result.data[i].bsu_final,
+          bsu_inout:result.data[i].bsu_inout,
+          keterangan:result.data[i].keterangan,
+          status:result.data[i].status,
+          status_anggaran:result.data[i].status_anggaran,
+          id_switchanggaran:result.data[i].id_switchanggaran,
+          jenis_switchanggaran:result.data[i].jenis_switchanggaran,
+          create_at:tanggal_insert, 
+          update_at:tanggal_update,
+        });
+      }
       // console.log(result.length);
       if (result.data.length >= 1) {
         res.status(200).json({
           responCode: 200,
           Msg: "Data Tersedia",
-          data: result,
+          data:{
+            total_data:result.total_data,
+            per_page:result.per_page,
+            total_page:result.total_page,
+            current_page:result.current_page,
+            data: data_arr,
+          }
         });
       } else {
         res.status(400).json({
