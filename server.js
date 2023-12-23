@@ -30,6 +30,7 @@ app.use(
     createParentPath: true,
   })
 );
+// app.use(express.static(__dirname + '/uploads'));
 // app.use(fileUpload());
 
 // app.get("/", (req, res) => {

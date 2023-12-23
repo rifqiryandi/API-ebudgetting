@@ -114,8 +114,8 @@ exports.listfile = (req, res) => {
   let idpengajuan = req.body.idpengajuan;
   let query = model.listfile(idpengajuan);
   let folder = path.join(__dirname, "../../uploads");
-  let folderupload = (__dirname, "/uploads");
-  let folderawal = path.basename(path.join(path.dirname(__dirname),"../"));
+  let folderupload = express.static(__dirname, "/uploads");
+  let folderawal = express.static(path.basename(path.join(path.dirname(__dirname),"../")));
   let ha = req.protocol + '://' + req.get('host') + '/' + folderawal + folderupload;
   // var fullUrl = folder+ "/";
   
