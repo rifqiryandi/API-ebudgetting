@@ -58,6 +58,7 @@ app.use(
 app.get("/", (req, res) => {
   res.send("API Running");
 });
+app.use(express.static('../uploads'));
 
 // routes
 require("./app/routes/auth.route")(app);

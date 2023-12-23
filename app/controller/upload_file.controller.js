@@ -104,10 +104,17 @@ exports.upload_file_realisasi = (req, res) => {
 };
 
 exports.getfile = (req, res) => {
-  var kodeunik = req.body.kodeunik;
-  var nmfile = req.body.nmfile;
-  const file = "uploads/" + kodeunik + "/" + nmfile;
-  res.download(file);
+
+    let kode_unik = req.body.kode_unik;
+    let lampiran = req.body.lampiran;
+  
+    res.download('./uploads/'+kode_unik+'/'+lampiran+'')
+    // console.log('asdasda');
+  
+  // var kodeunik = req.body.kodeunik;
+  // var nmfile = req.body.nmfile;
+  // const file = "uploads/" + kodeunik + "/" + nmfile;
+  // res.download(file);
 };
 
 exports.listfile = (req, res) => {
