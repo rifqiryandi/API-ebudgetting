@@ -30,7 +30,6 @@ app.use(
     createParentPath: true,
   })
 );
-// app.use(express.static(__dirname + '/uploads'));
 // app.use(fileUpload());
 
 // app.get("/", (req, res) => {
@@ -59,6 +58,7 @@ app.use(
 app.get("/", (req, res) => {
   res.send("API Running");
 });
+app.use(express.static('../uploads'));
 
 // routes
 require("./app/routes/auth.route")(app);

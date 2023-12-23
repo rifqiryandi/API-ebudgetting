@@ -16,6 +16,9 @@ module.exports = function (app) {
     [authJwt.verifyToken],
     controller.upload_file_realisasi
   );
+  app.post("/download", controller.getfile);
+  // Return the generated file for download
+  app.get("/download", controller.getfile);
   app.post("/upload/getfile", [authJwt.verifyToken], controller.getfile);
   app.post("/upload/listfile", [authJwt.verifyToken], controller.listfile);
   app.post(

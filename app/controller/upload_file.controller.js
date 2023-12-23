@@ -104,18 +104,25 @@ exports.upload_file_realisasi = (req, res) => {
 };
 
 exports.getfile = (req, res) => {
-  var kodeunik = req.body.kodeunik;
-  var nmfile = req.body.nmfile;
-  const file = "uploads/" + kodeunik + "/" + nmfile;
-  res.download(file);
+
+    let kode_unik = req.body.kode_unik;
+    let lampiran = req.body.lampiran;
+  
+    res.download('./uploads/'+kode_unik+'/'+lampiran+'')
+    // console.log('asdasda');
+  
+  // var kodeunik = req.body.kodeunik;
+  // var nmfile = req.body.nmfile;
+  // const file = "uploads/" + kodeunik + "/" + nmfile;
+  // res.download(file);
 };
 
 exports.listfile = (req, res) => {
   let idpengajuan = req.body.idpengajuan;
   let query = model.listfile(idpengajuan);
   let folder = path.join(__dirname, "../../uploads");
-  let folderupload = express.static(__dirname, "/uploads");
-  let folderawal = express.static(path.basename(path.join(path.dirname(__dirname),"../")));
+  let folderupload = (__dirname, "/uploads");
+  let folderawal = path.basename(path.join(path.dirname(__dirname),"../"));
   let ha = req.protocol + '://' + req.get('host') + '/' + folderawal + folderupload;
   // var fullUrl = folder+ "/";
   
