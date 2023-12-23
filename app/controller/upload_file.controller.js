@@ -117,6 +117,20 @@ exports.getfile = (req, res) => {
   // res.download(file);
 };
 
+exports.getfilerealisasi = (req, res) => {
+
+  let kode_unik = req.body.kode_unik;
+  let lampiran = req.body.lampiran;
+
+  res.download('./uploads/realisasi/'+kode_unik+'/'+lampiran+'')
+  // console.log('asdasda');
+
+// var kodeunik = req.body.kodeunik;
+// var nmfile = req.body.nmfile;
+// const file = "uploads/" + kodeunik + "/" + nmfile;
+// res.download(file);
+};
+
 exports.listfile = (req, res) => {
   let idpengajuan = req.body.idpengajuan;
   let query = model.listfile(idpengajuan);
