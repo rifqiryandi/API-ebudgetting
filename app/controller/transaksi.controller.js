@@ -154,11 +154,16 @@ function inputpresenanggaran(req, res) {
   );
   query
     .then((result) => {
-      console.log(result);
-      if (result >= 1) {
+      // console.log(result);
+      if (result === "1Tambah") {
         res.status(200).json({
           responCode: 200,
-          Msg: "Simpan Data Berhasil",
+          Msg: "Data Berhasil Simpan",
+        });
+      } else if (result >= 1) {
+        res.status(400).json({
+          responCode: 400,
+          Msg: "Data Sudah Ada",
         });
       } else {
         res.status(401).json({
@@ -166,6 +171,17 @@ function inputpresenanggaran(req, res) {
           Msg: result.sqlMessage,
         });
       }
+      // if (result >= 1) {
+      //   res.status(200).json({
+      //     responCode: 200,
+      //     Msg: "Simpan Data Berhasil",
+      //   });
+      // } else {
+      //   res.status(401).json({
+      //     responCode: 401,
+      //     Msg: result.sqlMessage,
+      //   });
+      // }
     })
     .catch(function (error) {
       // console.log(error);
