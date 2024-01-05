@@ -299,64 +299,106 @@ let inputpresenanggaran = (
   return new Promise(async function (resolve) {
     try {
       let data = db.knex1
-        .insert([
-          {
-            //id_anggaran: id_anggaran_p,
-            bulan: bulan_p,
-            tahun: tahun,
-            create_by: userid_p,
-            create_date: dateTime,
-            update_date: null,
-            presentasi: presentasi_p,
-            // nominal: nominal,
-          },
-        ])
-        .into("m_presentasi_anggaran");
-      resolve(data);
+        .select("bulan")
+        .from("m_presentasi_anggaran")
+        .where("bulan", bulan_p)
+        .where("tahun", tahun)
+        .then(async (userNameList) => {
+          // console.log(userNameList.length);
+          if ((await userNameList.length) === 0) {
+            return db.knex1
+              .insert([
+                    {
+                      // id_anggaran: id_anggaran_p,
+                      bulan: bulan_p,
+                      tahun: tahun,
+                      create_by: userid_p,
+                      create_date: dateTime,
+                      update_date: null,
+                      presentasi: presentasi_p,
+                      // nominal: nominal,
+                    },
+                  ])
+              .into("m_presentasi_anggaran")
+              .then((newUserId) => {
+                // console.log("inserted user", newUserId);
+                let response = newUserId.length + "Tambah";
+                resolve(response);
+                console.log(response);
+              })
+              .catch(function (error) {
+                resolve(error);
+              });
+          } else {
+            resolve(userNameList.length);
+          }
+        });
     } catch (error) {
       // console.log("asd");
       resolve(error);
     }
-
-    // db.knex1
-    //   .transaction(function (trx) {
-    //     db.knex1
-    //       .insert([
-    //         {
-    //           // id_anggaran: id_anggaran_p,
-    //           bulan: bulan_p,
-    //           tahun: tahun,
-    //           create_by: userid_p,
-    //           create_date: dateTime,
-    //           update_date: null,
-    //           presentasi: presentasi_p,
-    //           // nominal: nominal,
-    //         },
-    //       ])
-    //       .into("m_presentasi_anggaran")
-    //       .then(async function (trx) {
-    //         return await db
-    //           .knex1("m_anggaran")
-    //           .where({
-    //             id: id_anggaran_p,
-    //             // id_pengajuan: id_pengajuan_p,
-    //           })
-    //           .update({
-    //             susunan_anggaran: sisanominal,
-    //           });
-    //       })
-    //       .then(trx.commit)
-    //       .catch(trx.rollback);
-    //   })
-    //   .then(function (inserts) {
-    //     resolve(inserts);
-    //     // console.log(inserts);
-    //   })
-    //   .catch(function (error) {
-    //     resolve(error);
-    //     // console.log(error);
-    //   });
   });
+  // return new Promise(async function (resolve) {
+  //   try {
+  //     let data = db.knex1
+  //       .insert([
+  //         {
+  //           //id_anggaran: id_anggaran_p,
+  //           bulan: bulan_p,
+  //           tahun: tahun,
+  //           create_by: userid_p,
+  //           create_date: dateTime,
+  //           update_date: null,
+  //           presentasi: presentasi_p,
+  //           // nominal: nominal,
+  //         },
+  //       ])
+  //       .into("m_presentasi_anggaran");
+  //     resolve(data);
+  //   } catch (error) {
+  //     // console.log("asd");
+  //     resolve(error);
+  //   }
+
+  //   // db.knex1
+  //   //   .transaction(function (trx) {
+  //   //     db.knex1
+  //   //       .insert([
+  //   //         {
+  //   //           // id_anggaran: id_anggaran_p,
+  //   //           bulan: bulan_p,
+  //   //           tahun: tahun,
+  //   //           create_by: userid_p,
+  //   //           create_date: dateTime,
+  //   //           update_date: null,
+  //   //           presentasi: presentasi_p,
+  //   //           // nominal: nominal,
+  //   //         },
+  //   //       ])
+  //   //       .into("m_presentasi_anggaran")
+  //   //       .then(async function (trx) {
+  //   //         return await db
+  //   //           .knex1("m_anggaran")
+  //   //           .where({
+  //   //             id: id_anggaran_p,
+  //   //             // id_pengajuan: id_pengajuan_p,
+  //   //           })
+  //   //           .update({
+  //   //             susunan_anggaran: sisanominal,
+  //   //           });
+  //   //       })
+  //   //       .then(trx.commit)
+  //   //       .catch(trx.rollback);
+  //   //   })
+  //   //   .then(function (inserts) {
+  //   //     resolve(inserts);
+  //   //     // console.log(inserts);
+  //   //   })
+  //   //   .catch(function (error) {
+  //   //     resolve(error);
+  //   //     // console.log(error);
+  //   //   });
+  // });
 };
 
 const getidanggaran = (
