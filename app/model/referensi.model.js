@@ -41,7 +41,11 @@ let getdepartemen = (entitas,status) => {
         //   status: 2,
         // })
         .whereILike("a.kode_entitas", `%${entitas || ""}%`)
-        .orderBy("a.create_date", "desc");
+        // .orderBy("a.create_date", "desc")
+        .orderBy([
+          { column: "a.nama_departement", order: "asc" },
+          { column: "a.create_date", order: "desc" },
+        ]);
       // console.log(data);
       resolve(data);
     } catch (error) {
