@@ -1693,7 +1693,8 @@ let validasipengajuan = (
   id_anggaran,
   status,
   alasan,
-  idkeg
+  idkeg,
+  uniqkey
 ) => {
   // let id_p = id_pengajuan;
   var today = new Date();
@@ -1714,7 +1715,9 @@ let validasipengajuan = (
     "-" +
     nominal +
     "-" +
-    lengtlasid;
+    lengtlasid+
+    "-" +
+    uniqkey;
   // console.log(
   //   rubrik +
   //     "-" +
@@ -1820,7 +1823,8 @@ let validasipengajuanpk = (
   id_pengajuan,
   status,
   alasan,
-  idkeg
+  idkeg,
+  uniqkey
 ) => {
   // let id_p = id_pengajuan;
   var today = new Date();
@@ -1841,7 +1845,9 @@ let validasipengajuanpk = (
     "-" +
     nominal +
     "-" +
-    lengtlasid;
+    lengtlasid +
+    "-" +
+    uniqkey
   return new Promise(async function (resolve) {
     if (status == 1) {
       try {

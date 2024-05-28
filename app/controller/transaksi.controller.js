@@ -780,6 +780,7 @@ async function validasipengajuan(req, res) {
     const prefix = await helper.prefixid();
     var lengtlasid = prefix.toString();
     var lengtid = lengtlasid.length;
+    var uniqkey = Math.floor(1000 + Math.random() * 9000);
     // console.log(lengtid);
     if (lengtid === 1) {
       lengtlasid = "000" + prefix;
@@ -803,7 +804,8 @@ async function validasipengajuan(req, res) {
       id_anggaran,
       status,
       alasan,
-      idkeg
+      idkeg,
+      uniqkey
     );
     query.then((result) => {
       var prefix =
@@ -815,7 +817,9 @@ async function validasipengajuan(req, res) {
         "-" +
         nominal +
         "-" +
-        lengtlasid;
+        lengtlasid+
+        "-" +
+        uniqkey;
       // console.log(result);
       if (result) {
         if (status == "1") {
@@ -840,11 +844,15 @@ async function validasipengajuan(req, res) {
     // console.log(
     //   rubrik + "-" + kdsubmatanggaran + "-" + nominal + "-" + lengtlasid
     // );
-  } catch (e) {
+  } catch (error) {
+    console.log(error);
     res.status(500).json({
-      responCode: 500,
-      // 'Msg': (err.response.data.fault.message).trim(),
-      Msg: "Error Server",
+        responCode: 400,
+        // 'Msg': (err.response.data.fault.message).trim(),
+        Msg: error,
+      // responCode: 500,
+      // // 'Msg': (err.response.data.fault.message).trim(),
+      // Msg: "Error Server",
     });
   }
   // let query = model.validasipengajuan(id_pengajuan, status, id_anggaran);
@@ -888,6 +896,7 @@ async function validasipengajuanpk(req, res) {
     const prefix = await helper.prefixidpk();
     var lengtlasid = prefix.toString();
     var lengtid = lengtlasid.length;
+    var uniqkey = Math.floor(1000 + Math.random() * 9000);
     // console.log(lengtid);
     if (lengtid === 1) {
       lengtlasid = "000" + prefix;
@@ -910,7 +919,8 @@ async function validasipengajuanpk(req, res) {
       id_pengajuan,
       status,
       alasan,
-      idkeg
+      idkeg,
+      uniqkey,
     );
     query.then((result) => {
       var prefix =
@@ -922,7 +932,9 @@ async function validasipengajuanpk(req, res) {
         "-" +
         nominal +
         "-" +
-        lengtlasid;
+        lengtlasid +
+        "-" +
+        uniqkey;
       // console.log(result);
       if (result) {
         if (status == "1") {

@@ -20,6 +20,26 @@ function prefixid(nopend) {
   });
 }
 
+function prefixid(id) {
+  return new Promise(async function (resolve) {
+    // console.log(nopend);
+    let query = model.getprefixnew();
+    query
+      .then((result) => {
+        // console.log(result[0].id);
+        var lastid = result[0].id;
+        if (lastid === null) {
+          lastid = 1;
+        }
+        resolve(lastid);
+        // console.log(noticket);
+      })
+      .catch(function (error) {
+        resolve(error);
+      });
+  });
+}
+
 function prefixidpk() {
   return new Promise(async function (resolve) {
     // console.log(nopend);
