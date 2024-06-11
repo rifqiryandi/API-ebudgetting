@@ -140,10 +140,13 @@ let listtransaksi = (
             "c.kode_mata_anggaran",
             `%${matanggaran || ""}%`
           );
-        }  else if (kddepartemen !== "") {
+        } else if (kddepartemen !== "" || kelmatanggaran !== "") {
           queryBuilder.whereILike(
             "a.kode_departemen",
             `%${kddepartemen || ""}%`
+          ).whereILike(
+            "c.kode_kelompok_mata_anggaran",
+            `%${kelmatanggaran || ""}%`
           );
         } else if (kelmatanggaran !== "") {
           queryBuilder.whereILike(
@@ -224,10 +227,13 @@ let listtransaksi = (
             "c.kode_mata_anggaran",
             `%${matanggaran || ""}%`
           );
-        } else if (kddepartemen !== "") {
+        } else if (kddepartemen !== "" || kelmatanggaran !== "") {
           queryBuilder.whereILike(
             "a.kode_departemen",
             `%${kddepartemen || ""}%`
+          ).whereILike(
+            "c.kode_kelompok_mata_anggaran",
+            `%${kelmatanggaran || ""}%`
           );
         } else if (kelmatanggaran !== "") {
           queryBuilder.whereILike(
