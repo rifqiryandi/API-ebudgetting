@@ -130,28 +130,44 @@ let listtransaksi = (
       .leftJoin("r_departemen as b", "a.kode_departemen", "b.kode_departement")
       .leftJoin("r_entitas as e", "e.kode_entitas", "b.kode_entitas")
       .modify(function (queryBuilder) {
-        if (kdsubmatanggaran !== "") {
+        if (kdsubmatanggaran !== ""  || matanggaran !== "" || kddepartemen !== "" || kelmatanggaran !== "") {
           queryBuilder.whereILike(
             "a.kode_sub_mata_anggaran",
             `%${kdsubmatanggaran || ""}%`
-          );
-        } else if (matanggaran !== "") {
-          queryBuilder.whereILike(
+          ).whereILike(
             "c.kode_mata_anggaran",
             `%${matanggaran || ""}%`
+          ).where(
+            "a.kode_departemen",
+            (kddepartemen)
+          ).whereILike(
+            "c.kode_kelompok_mata_anggaran",
+            `%${kelmatanggaran || ""}%`
+          );
+        }
+        else
+        if (kdsubmatanggaran !== "" ) {
+          queryBuilder.where(
+            "a.kode_sub_mata_anggaran",
+          (kdsubmatanggaran)
+          );
+        } else if (matanggaran !== "") {
+          queryBuilder.where(
+            "c.kode_mata_anggaran",
+            (matanggaran)
           );
         } else if (kddepartemen !== "" || kelmatanggaran !== "") {
-          queryBuilder.whereILike(
+          queryBuilder.where(
             "a.kode_departemen",
-            `%${kddepartemen || ""}%`
+            (kddepartemen)
           ).whereILike(
             "c.kode_kelompok_mata_anggaran",
             `%${kelmatanggaran || ""}%`
           );
         } else if (kelmatanggaran !== "") {
-          queryBuilder.whereILike(
+          queryBuilder.where(
             "c.kode_kelompok_mata_anggaran",
-            `%${kelmatanggaran || ""}%`
+            (kelmatanggaran)
           );
         } else {
         }
@@ -217,6 +233,22 @@ let listtransaksi = (
       .leftJoin("r_departemen as b", "a.kode_departemen", "b.kode_departement")
       .leftJoin("r_entitas as e", "e.kode_entitas", "b.kode_entitas")
       .modify(function (queryBuilder) {
+        if (kdsubmatanggaran !== ""  || matanggaran !== "" || kddepartemen !== "" || kelmatanggaran !== "") {
+          queryBuilder.whereILike(
+            "a.kode_sub_mata_anggaran",
+            `%${kdsubmatanggaran || ""}%`
+          ).whereILike(
+            "c.kode_mata_anggaran",
+            `%${matanggaran || ""}%`
+          ).where(
+            "a.kode_departemen",
+            (kddepartemen)
+          ).whereILike(
+            "c.kode_kelompok_mata_anggaran",
+            `%${kelmatanggaran || ""}%`
+          );
+        }
+        else
         if (kdsubmatanggaran !== "") {
           queryBuilder.whereILike(
             "a.kode_sub_mata_anggaran",
@@ -228,9 +260,9 @@ let listtransaksi = (
             `%${matanggaran || ""}%`
           );
         } else if (kddepartemen !== "" || kelmatanggaran !== "") {
-          queryBuilder.whereILike(
+          queryBuilder.where(
             "a.kode_departemen",
-            `%${kddepartemen || ""}%`
+            (kddepartemen)
           ).whereILike(
             "c.kode_kelompok_mata_anggaran",
             `%${kelmatanggaran || ""}%`
